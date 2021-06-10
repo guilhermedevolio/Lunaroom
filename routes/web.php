@@ -14,14 +14,21 @@ use \App\Http\Controllers\AuthController;
 |
 */
 
+
+
 Route::get('/', function () {
-    return redirect(route('login'));
+    return 'welcome';
+})->name('welcome');
+
+
+Route::prefix('auth')->middleware(['only_visitant'])->group(function () {
+    Route::get('login', [AuthController::class, 'viewLogin'])->name('login');
+    Route::post('login', [AuthController::class, 'postAuthenticate'])->name('post.login');
+    Route::get('register', [AuthController::class, 'viewRegister'])->name('register');
+    Route::post('register', [AuthController::class, 'postUser'])->name('post.register');
 });
 
-Route::prefix('auth')->group(function () {
-    Route::get('login', [AuthController::class, 'viewLogin'])->name('login');
-    Route::get('register', [AuthController::class, 'viewRegister'])->name('register');
-});
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->middleware(['admin'])->group(function(){
     Route::get('/', [\App\Http\Controllers\AdminDashboardController::class, 'viewIndex'])->name('dash.admin');

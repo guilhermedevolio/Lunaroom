@@ -1,3 +1,7 @@
+<!-- Libs JS -->
+<script src="./dist/libs/apexcharts/dist/apexcharts.min.js"></script>
+<!-- Tabler Core -->
+<script src="./dist/js/tabler.min.js"></script>
 <script>
     // @formatter:off
     document.addEventListener("DOMContentLoaded", function () {
