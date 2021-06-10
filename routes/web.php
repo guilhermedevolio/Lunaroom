@@ -18,4 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', [AuthController::class, 'viewLogin'])->name('login');
+Route::prefix('auth')->group(function () {
+    Route::get('login', [AuthController::class, 'viewLogin'])->name('login');
+    Route::get('register', [AuthController::class, 'viewRegister'])->name('register');
+});

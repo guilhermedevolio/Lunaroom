@@ -1,25 +1,27 @@
 @yield('head', View::make('layouts.components.head'))
-
 <body class="antialiased border-top-wide border-primary d-flex flex-column">
 <div class="page page-center">
     <div class="container-tight py-4">
         <div class="text-center mb-4">
             <a href="."><img src="./static/logo.svg" height="36" alt=""></a>
         </div>
-        <form class="card card-md" method="POST" autocomplete="off">
+        <form class="card card-md"  method="POST">
             <div class="card-body">
-                <h2 class="card-title text-center mb-4">Faça login na Lunaroom</h2>
+                <h2 class="card-title text-center mb-4">Crie sua conta na Lunaroom</h2>
                 <div class="mb-3">
-                    <label class="form-label">Endereço de Email</label>
-                    <input type="email" class="form-control" placeholder="E-mail">
+                    <label class="form-label">Nome</label>
+                    <input type="text" class="form-control" placeholder="Seu nome completo">
                 </div>
-                <div class="mb-2">
-                    <label class="form-label">
-                        Senha
-                        <span class="form-label-description">
-                  <a href="./forgot-password.html">Esqueci minha senha</a>
-                </span>
-                    </label>
+                <div class="mb-3">
+                    <label class="form-label">Nome de Usuário (Você será reconhecido por esse nome na comunidade)</label>
+                    <input type="text" class="form-control" placeholder="Nome de Usuário">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" placeholder="Seu e-mail">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Senha</label>
                     <div class="input-group input-group-flat">
                         <input type="password" class="form-control"  placeholder="Senha"  autocomplete="off">
                         <span class="input-group-text">
@@ -30,20 +32,16 @@
                     </div>
                 </div>
                 <div class="form-footer">
-                    <button type="submit" class="btn btn-primary w-100">Entrar</button>
-                </div>
-            </div>
-            <div class="hr-text">ou</div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col md-12"><a href="#" class="btn btn-white w-100">
-                            Registre-se
-                        </a></div>
+                    <button type="submit" class="btn btn-primary w-100">Criar minha conta</button>
                 </div>
             </div>
         </form>
+        <div class="text-center text-muted mt-3">
+            Já tem uma conta ? <a href="{{route('login')}}" tabindex="-1">Login</a>
+        </div>
     </div>
 </div>
-@yield('scripts', View::make('layouts.components.scripts'))
+<!-- Libs JS -->
+<!-- Tabler Core -->
+<script src="./dist/js/tabler.min.js"></script>
 </body>
-
