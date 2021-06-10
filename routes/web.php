@@ -15,10 +15,14 @@ use \App\Http\Controllers\AuthController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('login'));
 });
 
 Route::prefix('auth')->group(function () {
     Route::get('login', [AuthController::class, 'viewLogin'])->name('login');
     Route::get('register', [AuthController::class, 'viewRegister'])->name('register');
+});
+
+Route::prefix('admin')->middleware(['admin'])->group(function(){
+    Route::get('/', [\App\Http\Controllers\AdminDashboardController::class, 'viewIndex'])->name('dash.admin');
 });
