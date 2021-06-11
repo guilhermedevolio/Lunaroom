@@ -1,4 +1,4 @@
-## Lunaroom
+# Lunaroom
 
 ### What is lunaroom ?
 #### Lunaroomoom is a software to manage courses.
