@@ -41,7 +41,7 @@ class UserController extends Controller
            $user = $this->repository->updateUser($userId, $payload);
            return redirect(route('get-user', $userId));
         } catch (\Exception $e) {
-            return $this->error(['msg' => $e->getMessage()]);
+            return $this->error(['msg' => 'Error occurred an update user']);
         }
     }
 }

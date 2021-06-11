@@ -84,7 +84,6 @@ class UserControllerTest extends TestCase
         $response = $this->actingAs($user)
             ->put(route('put-user', $user->id), $payload);
 
-
         $response->assertStatus(302);
     }
 }

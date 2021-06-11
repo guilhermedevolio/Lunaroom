@@ -9,6 +9,7 @@ use App\Traits\ResponseTrait;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -44,7 +45,7 @@ class AuthController extends Controller
         }
     }
 
-    public function postUser(RegisterUserRequest $request)
+    public function postUser(RegisterUserRequest $request): JsonResponse
     {
         $payload = $request->validated();
 
@@ -52,7 +53,7 @@ class AuthController extends Controller
             $response = $this->repository->registerUser($payload);
             return response()->json($response, 200);
         } catch (\Exception $e) {
-            return response()->json(['msg' => $e->getMessage()], 402);
+            return response()->json(['msg' => 'Error occurred an post user'], 402);
         }
     }
 
