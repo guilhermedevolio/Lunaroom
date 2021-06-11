@@ -26,7 +26,7 @@ class AuthRepository
            throw new AuthorizationException('Wrong Credentials', '401');
        }
 
-        return true;
+       return true;
     }
 
     public function registerUser(array $payload)

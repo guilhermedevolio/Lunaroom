@@ -17,4 +17,9 @@ trait ResponseTrait
     {
         return response()->json($data, 401);
     }
+
+    public function error(array $data = null): JsonResponse
+    {
+        return response()->json($data, 422);
+    }
 }

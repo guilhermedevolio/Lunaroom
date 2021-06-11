@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use \App\Enums\UserEnum;
 
 class CreateUsersTable extends Migration
 {
@@ -20,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('username')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->boolean('admin')->default(false);
+            $table->boolean('admin')->default(UserEnum::ROLE_USER);
             $table->rememberToken();
             $table->timestamps();
         });

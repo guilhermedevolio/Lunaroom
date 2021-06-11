@@ -42,7 +42,7 @@ class AuthControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_client_cannot_see_login_page()
+    public function test_client_can_not_see_login_page()
     {
         $user = User::factory()->create();
 
@@ -84,17 +84,23 @@ class AuthControllerTest extends TestCase
         Mail::fake();
 
         $payload = [
-            'name' => 'Guilherme',
-            'username' => 'aoiwdnoawid',
-            'email' => 'devguilhermedevolio@gmail.com',
-            'password' => 'fodase'
+            'name' => 'TestUser',
+            'username' => 'username',
+            'email' => 'test@gmail.com',
+            'password' => 'password'
         ];
 
-        $response = $this->post(route('post.register'), $payload);
+        $response = $this->post(route('post.register'), $payload)
+            ->assertStatus(200);
 
-        $response->assertStatus(200);
+        $this->assertDatabaseHas('users', [
+            'name' => $payload["name"],
+            'email' => $payload["email"]
+        ]);
 
-        Mail::assertSent(GreetingsRegister::class);
+        Mail::assertSent(GreetingsRegister::class, function ($email) use ($payload) {
+            return $email->hasTo($payload["email"]);
+        });
     }
 
     public function test_client_can_not_register()
@@ -105,7 +111,7 @@ class AuthControllerTest extends TestCase
             'name' => 'Guilherme',
             'username' => $user->username,
             'email' => $user->email,
-            'password' => 'fodase'
+            'password' => 'incorrect_password'
         ];
 
         $response = $this->post(route('post.register'), $payload);
@@ -116,7 +122,9 @@ class AuthControllerTest extends TestCase
     public function test_client_can_logout()
     {
         $user = User::factory()->create();
-        $response = $this->actingAs($user)->get(route('logout'));
-        $response->assertRedirect(route('login'));
+
+        $this->actingAs($user)
+            ->get(route('logout'))
+            ->assertRedirect(route('login'));
     }
 }
