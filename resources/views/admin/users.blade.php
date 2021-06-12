@@ -13,8 +13,8 @@
     </div>
 
     <div class="card">
-        <div class="table-responsive">
-            <table class="table table-vcenter card-table">
+        <div class="table-responsive p-3">
+            <table id="table" class="table table-vcenter card-table">
                 <thead>
                 <tr>
                     <th>Nome</th>
@@ -45,5 +45,8 @@
             </table>
         </div>
     </div>
+    <script>
+        $('#table').DataTable();
+    </script>
 
 @endsection

@@ -6,6 +6,7 @@ namespace Tests\Feature\App\Http\Controllers;
 
 use App\Mail\GreetingsRegister;
 use App\Models\User;
+use App\Observers\UserObserver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
@@ -90,12 +91,16 @@ class AuthControllerTest extends TestCase
             'password' => 'password'
         ];
 
-        $response = $this->post(route('post.register'), $payload)
-            ->assertStatus(200);
+        $response = $this->post(route('post.register'), $payload)->assertStatus(200);
+
 
         $this->assertDatabaseHas('users', [
             'name' => $payload["name"],
             'email' => $payload["email"]
+        ]);
+
+        $this->assertDatabaseHas('wallets', [
+            'user_id' => $response->decodeResponseJson()["id"]
         ]);
 
         Mail::assertSent(GreetingsRegister::class, function ($email) use ($payload) {
@@ -127,4 +132,7 @@ class AuthControllerTest extends TestCase
             ->get(route('logout'))
             ->assertRedirect(route('login'));
     }
+
+
+
 }

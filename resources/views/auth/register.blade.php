@@ -8,7 +8,7 @@
         <form class="card card-md" method="POST" id="form-register">
             {{csrf_field()}}
             <div class="card-body">
-                <h2 class="card-title text-center mb-4">Registre-se sua conta na Lunaroom</h2>
+                <h2 class="card-title text-center mb-4">Registre-se na Lunaroom</h2>
                 <div class="mb-3">
                     <label class="form-label">Nome</label>
                     <input type="text" name="name" class="form-control" placeholder="Seu nome completo">
@@ -64,7 +64,7 @@
     </div>
 </div>
 <script>
-    $('#form-register').on('    submit', function (e) {
+    $('#form-register').on('submit', function (e) {
         e.preventDefault();
         const payload = $(this).serialize();
         $.ajax({

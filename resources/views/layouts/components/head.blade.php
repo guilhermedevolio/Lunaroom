@@ -13,6 +13,8 @@
     <link href="{{asset('dist/css/demo.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('src/toastr/toastr.css')}}" rel="stylesheet"/>
     <script src="{{asset('src/toastr/toastr.min.js')}}"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
 </head>
 <script>
     toastr.options = {
@@ -38,5 +40,8 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+
+</script>
 
 </script>

@@ -36,6 +36,7 @@ class UserControllerTest extends TestCase
 
         $response->assertViewIs('admin.update-user')
             ->assertViewHas('user');
+
     }
 
     public function test_admin_can_not_see_update_user_page()
@@ -67,7 +68,7 @@ class UserControllerTest extends TestCase
             'email' => $payload["email"]
         ]);
 
-        $response->assertRedirect(route('get-user', $user->id));
+        $response->assertOk();
     }
 
     public function test_admin_can_not_update_user()
@@ -86,5 +87,31 @@ class UserControllerTest extends TestCase
 
         $response->assertStatus(302);
     }
+
+    public function test_admin_can_delete_user()
+    {
+        $admin = User::factory()->create(['admin' => '1']);
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($admin)
+            ->delete(route('delete-user', $user->id))
+            ->assertOk();
+
+        $this->assertDatabaseMissing('users', [
+            'email' => $user->email
+        ]);
+    }
+
+    public function test_admin_can_not_delete_himself()
+    {
+        $user = User::factory()->create(['admin' => '1']);
+
+        $response = $this->actingAs($user)
+            ->delete(route('delete-user', $user->id))
+            ->assertStatus(422)
+            ->assertExactJson(['msg' => 'Você não pode se excluir']);
+    }
+
+
 }
 

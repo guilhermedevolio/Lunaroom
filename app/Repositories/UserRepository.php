@@ -28,4 +28,10 @@ class UserRepository
         $user = $this->getUserById($userId);
         return $user->update($payload);
     }
+
+    public function deleteUser(int $userId): bool
+    {
+        $user = $this->getUserById($userId);
+        return $user->delete();
+    }
 }

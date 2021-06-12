@@ -21,6 +21,7 @@ Route::get('/', function () {
     return 'welcome';
 })->name('welcome');
 
+//Authentication Routes
 Route::prefix('auth')->middleware(['only_visitant'])->group(function () {
     Route::get('login', [AuthController::class, 'viewLogin'])->name('login');
     Route::post('login', [AuthController::class, 'postAuthenticate'])->name('post.login');
@@ -28,10 +29,12 @@ Route::prefix('auth')->middleware(['only_visitant'])->group(function () {
     Route::post('register', [AuthController::class, 'postUser'])->name('post.register');
 });
 
+//User Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
 
+//Admin Routes
 Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('/', [AdminDashboardController::class, 'viewIndex'])->name('dash.admin');
 
@@ -39,4 +42,5 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('users', [UserController::class, 'getUsers'])->name('users');
     Route::get('user/{user}', [UserController::class, 'getUserById'])->name('get-user');
     Route::put('user/{user}', [UserController::class, 'putUser'])->name('put-user');
+    Route::delete('user/{user}', [UserController::class, 'deleteUser'])->name('delete-user');
 });

@@ -28,7 +28,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required',
             'username' => 'required|unique:users,username,'.$this->user,
             'email' => 'required|email|unique:users,email,'.$this->user,
-            'admin' => 'required|in:'.UserEnum::ROLE_USER.','.UserEnum::ROLE_ADMIN
+            'admin' => 'in:'.UserEnum::ROLE_USER.','.UserEnum::ROLE_ADMIN
         ];
     }
 }

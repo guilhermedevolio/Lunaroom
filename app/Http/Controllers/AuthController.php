@@ -49,12 +49,8 @@ class AuthController extends Controller
     {
         $payload = $request->validated();
 
-        try {
-            $response = $this->repository->registerUser($payload);
-            return response()->json($response, 200);
-        } catch (\Exception $e) {
-            return response()->json(['msg' => 'Error occurred an post user'], 402);
-        }
+        $response = $this->repository->registerUser($payload);
+        return response()->json($response, 200);
     }
 
     public function logout()

@@ -33,15 +33,32 @@ class UserController extends Controller
         return view('admin.update-user', compact('user'));
     }
 
-    public function putUser(UpdateUserRequest $request, int $userId)
+    public function putUser(UpdateUserRequest $request, int $userId): JsonResponse
     {
         $payload = $request->validated();
 
-        try {
-           $user = $this->repository->updateUser($userId, $payload);
-           return redirect(route('get-user', $userId));
-        } catch (\Exception $e) {
-            return $this->error(['msg' => 'Error occurred an update user']);
-        }
+       $user = $this->repository->updateUser($userId, $payload);
+       return $this->success();
     }
+
+    public function deleteUser(int $userId): JsonResponse
+    {
+
+        if($this->checkIfIsMe($userId)){
+            return $this->error(['msg' => 'Você não pode se excluir']);
+        }
+
+        $user = $this->repository->deleteUser($userId);
+        return $this->success();
+    }
+
+    public function checkIfIsMe(int $id): bool
+    {
+        if(\Auth::user()->id == $id){
+            return true;
+        }
+
+        return false;
+    }
+
 }
