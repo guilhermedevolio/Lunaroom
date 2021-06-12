@@ -8,9 +8,9 @@ class UserRepository
 {
     protected $model;
 
-    public function __construct(User $user)
+    public function __construct(User $model)
     {
-        $this->model = $user;
+        $this->model = $model;
     }
 
     public function getUsers()
@@ -20,7 +20,7 @@ class UserRepository
 
     public function getUserById(int $userId)
     {
-        return $this->model->findOrFail($userId);
+        return $this->model->with('wallet')->findOrFail($userId);
     }
 
     public function updateUser(int $userId, array $payload): bool

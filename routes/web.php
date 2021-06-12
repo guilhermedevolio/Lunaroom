@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\AdminDashboardController;
 use \App\Http\Controllers\UserController;
-
+use \App\Http\Controllers\WalletController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,4 +43,9 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('user/{user}', [UserController::class, 'getUserById'])->name('get-user');
     Route::put('user/{user}', [UserController::class, 'putUser'])->name('put-user');
     Route::delete('user/{user}', [UserController::class, 'deleteUser'])->name('delete-user');
+
+    //Wallets Routes
+    Route::prefix('wallet')->group(function() {
+        Route::put('update/{walletId}', [WalletController::class, 'updateWalletAsAdmin'])->name('put-wallet');
+    });
 });

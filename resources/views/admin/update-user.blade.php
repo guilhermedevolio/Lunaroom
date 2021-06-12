@@ -35,41 +35,42 @@
                     </div>
 
                     @if($user->id != Auth::user()->id)
-                    <label class="form-label">Cargo no Sistema</label>
-                    <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
-                        <label class="form-selectgroup-item flex-fill">
-                            <input type="radio" {{!$user->admin ? 'checked' : ''}} name="admin"
-                                   value="{{\App\Enums\UserEnum::ROLE_USER}}"
-                                   class="form-selectgroup-input">
-                            <div class="form-selectgroup-label d-flex align-items-center p-3">
-                                <div class="me-3">
-                                    <span class="form-selectgroup-check"></span>
+                        <label class="form-label">Cargo no Sistema</label>
+                        <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+                            <label class="form-selectgroup-item flex-fill">
+                                <input type="radio" {{!$user->admin ? 'checked' : ''}} name="admin"
+                                       value="{{\App\Enums\UserEnum::ROLE_USER}}"
+                                       class="form-selectgroup-input">
+                                <div class="form-selectgroup-label d-flex align-items-center p-3">
+                                    <div class="me-3">
+                                        <span class="form-selectgroup-check"></span>
+                                    </div>
+                                    <div>
+                                        Usuário
+                                    </div>
                                 </div>
-                                <div>
-                                    Usuário
+                            </label>
+                            <label class="form-selectgroup-item flex-fill">
+                                <input type="radio" {{$user->admin ? 'checked' : ''}} name="admin"
+                                       value="{{\App\Enums\UserEnum::ROLE_ADMIN}}" class="form-selectgroup-input">
+                                <div class="form-selectgroup-label d-flex align-items-center p-3">
+                                    <div class="me-3">
+                                        <span class="form-selectgroup-check"></span>
+                                    </div>
+                                    <div>
+                                        Administrador
+                                    </div>
                                 </div>
-                            </div>
-                        </label>
-                        <label class="form-selectgroup-item flex-fill">
-                            <input type="radio" {{$user->admin ? 'checked' : ''}} name="admin"
-                                   value="{{\App\Enums\UserEnum::ROLE_ADMIN}}" class="form-selectgroup-input">
-                            <div class="form-selectgroup-label d-flex align-items-center p-3">
-                                <div class="me-3">
-                                    <span class="form-selectgroup-check"></span>
+                            </label>
+                            @else
+                                <div class="alert alert-warning">
+                                    <p>Você não pode alterar suas próprias permissões</p>
                                 </div>
-                                <div>
-                                    Administrador
-                                </div>
-                            </div>
-                        </label>
-                        @else
-                            <div class="alert alert-warning">
-                                <p>Você não pode alterar suas próprias permissões</p>
-                            </div>
-                        @endif
-                        <button id="btn-update" type="submit" class="btn btn-primary mt-3 w-100">Atualizar Dados</button>
-                        <button id="btn-delete" class="btn btn-danger mt-3 w-100">Excluir Usuário</button>
-                    </div>
+                            @endif
+                            <button id="btn-update" type="submit" class="btn btn-primary mt-3 w-100">Atualizar Dados
+                            </button>
+                            <button id="btn-delete" class="btn btn-danger mt-3 w-100">Excluir Usuário</button>
+                        </div>
 
                 </div>
             </form>
@@ -105,7 +106,7 @@
                     data: form,
                     success: function (callback) {
                         toastr.success('Usuário atualizado com sucesso');
-                        setTimeout(function(){
+                        setTimeout(function () {
                             location.reload();
                         }, 2000);
                     },
@@ -116,6 +117,49 @@
                             });
                         } else {
                             toastr.error('Erro ao atualizar usuário');
+                        }
+                    }
+                })
+
+            })
+        </script>
+
+        <div class="card p-3 mt-5 mb-5">
+            <div class="mb-3">
+                <h2>Editar Carteira {{$user->name}}</h2>
+                <form id="form-wallet" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Créditos</label>
+                        <input type="text" name="credits" class="form-control"  value="{{$user->wallet->credits}}">
+                    </div>
+                    <button id="btn-update-wallet" type="submit" class="btn btn-primary mt-3 w-100">Atualizar Carteira
+                    </button>
+                </form>
+
+            </div>
+        </div>
+
+        <script>
+            $('#btn-update-wallet').on('click', (event) => {
+                event.preventDefault();
+                var form = $('#form-wallet').serialize();
+                $.ajax({
+                    url: "{{route('put-wallet', $user->wallet->id)}}",
+                    method: 'PUT',
+                    data: form,
+                    success: function (callback) {
+                        toastr.success('Carteira atualizada com sucesso');
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    },
+                    error: function (callback) {
+                        if (callback.responseJSON.errors) {
+                            $.each(callback.responseJSON.errors, function (key, value) {
+                                toastr.error(value);
+                            });
+                        } else {
+                            toastr.error('Erro ao atualizar carteira');
                         }
                     }
                 })

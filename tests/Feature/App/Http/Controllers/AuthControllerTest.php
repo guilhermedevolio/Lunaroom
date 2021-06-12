@@ -91,8 +91,10 @@ class AuthControllerTest extends TestCase
             'password' => 'password'
         ];
 
-        $response = $this->post(route('post.register'), $payload)->assertStatus(200);
+        $response = $this->post(route('post.register'), $payload)
+            ->assertStatus(200);
 
+        $response->assertJsonStructure(['name', 'username']);
 
         $this->assertDatabaseHas('users', [
             'name' => $payload["name"],
