@@ -24,6 +24,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                         <a href="#" class="dropdown-item">Perfil</a>
+                        <a href="{{route('campus')}}" class="dropdown-item">Área do Aluno</a>
                         <a href="{{route('logout')}}" class="dropdown-item">Logout</a>
                     </div>
                 </div>

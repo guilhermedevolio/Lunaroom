@@ -22,7 +22,7 @@ class OnlyVisitants
         }
 
         if(Auth::check() && !Auth::user()->admin){
-             return redirect(route('welcome'));
+             return redirect(route('campus'));
         }
 
         return $next($request);

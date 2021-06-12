@@ -62,9 +62,8 @@
             success: (callback) => {
                 toastr.success('Redirecionando..',  'Autenticado com sucesso');
                 setTimeout(function(){
-                    location.href = "{{route('dash.admin')}}"
+                    location.href = "{{route('login')}}"
                 }, 2000);
-
             },
             error: (callback) => {
                 $('#btn-login').show();

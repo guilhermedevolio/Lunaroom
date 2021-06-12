@@ -45,15 +45,33 @@ class AuthControllerTest extends TestCase
 
     public function test_client_can_not_see_login_page()
     {
+        //Prepare
         $user = User::factory()->create();
+        $this->actingAs($user);
 
-        $response = $this->actingAs($user)->get(route('login'));
+        //Act
+        $response = $this->get(route('login'));
 
-        $response->assertRedirect(route('welcome'));
+        //Assert
+        $response->assertRedirect(route('campus'));
+    }
+
+    public function test_client_can_see_campus()
+    {
+        //Prepare
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        //Act
+        $response = $this->get(route('campus'));
+
+        //Assert
+        $response->assertSee("Seja Bem Vindo(a) $user->name");
     }
 
     public function test_client_should_authenticate()
     {
+        //Prepare
         $user = User::factory()->create();
 
         $payload = [
@@ -61,13 +79,16 @@ class AuthControllerTest extends TestCase
             'password' => 'password'
         ];
 
+        //Act
         $response = $this->post(route('post.login'), $payload);
 
+        //Assert
         $response->assertStatus(200);
     }
 
     public function test_client_can_not_should_authenticate()
     {
+        //Prepare
         $user = User::factory()->create();
 
         $payload = [
@@ -75,13 +96,16 @@ class AuthControllerTest extends TestCase
             'password' => 'incorrect_password'
         ];
 
+        //Act
         $response = $this->post(route('post.login'), $payload);
 
+        //Assert
         $response->assertStatus(401);
     }
 
     public function test_client_should_register()
     {
+        //Prepare
         Mail::fake();
 
         $payload = [
@@ -91,8 +115,11 @@ class AuthControllerTest extends TestCase
             'password' => 'password'
         ];
 
-        $response = $this->post(route('post.register'), $payload)
-            ->assertStatus(200);
+        //Act
+        $response = $this->post(route('post.register'), $payload);
+
+        //Assert
+        $response->assertOk();
 
         $response->assertJsonStructure(['name', 'username']);
 
@@ -112,6 +139,7 @@ class AuthControllerTest extends TestCase
 
     public function test_client_can_not_register()
     {
+        //Prepare
         $user = User::factory()->create();
 
         $payload = [
@@ -121,20 +149,25 @@ class AuthControllerTest extends TestCase
             'password' => 'incorrect_password'
         ];
 
+        //Act
         $response = $this->post(route('post.register'), $payload);
 
+        //Assert
         $response->assertStatus(302);
     }
 
     public function test_client_can_logout()
     {
+        //Prepare
         $user = User::factory()->create();
+        $this->actingAs($user);
 
-        $this->actingAs($user)
-            ->get(route('logout'))
-            ->assertRedirect(route('login'));
+        //Act
+        $response = $this->get(route('logout'));
+
+        //Assert
+        $response->assertRedirect(route('login'));
     }
-
 
 
 }

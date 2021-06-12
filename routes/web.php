@@ -5,6 +5,7 @@ use \App\Http\Controllers\AuthController;
 use \App\Http\Controllers\AdminDashboardController;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\WalletController;
+use \App\Http\Controllers\CampusController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +33,8 @@ Route::prefix('auth')->middleware(['only_visitant'])->group(function () {
 //User Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/campus', [CampusController::class, 'viewCampus'])->name('campus');
 });
 
 //Admin Routes
@@ -45,7 +48,7 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::delete('user/{user}', [UserController::class, 'deleteUser'])->name('delete-user');
 
     //Wallets Routes
-    Route::prefix('wallet')->group(function() {
+    Route::prefix('wallet')->group(function () {
         Route::put('update/{walletId}', [WalletController::class, 'updateWalletAsAdmin'])->name('put-wallet');
     });
 });
