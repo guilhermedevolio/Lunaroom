@@ -6,7 +6,6 @@ namespace Tests\Feature\App\Http\Controllers;
 
 use App\Mail\GreetingsRegister;
 use App\Models\User;
-use App\Observers\UserObserver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;

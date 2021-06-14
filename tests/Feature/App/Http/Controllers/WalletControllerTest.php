@@ -26,7 +26,7 @@ class WalletControllerTest extends TestCase
         $response = $this->actingAs($user)
             ->put(route('put-wallet', $user->id), $payload);
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_user_can_not_update_wallet()

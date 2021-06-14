@@ -37,14 +37,14 @@ class UserController extends Controller
     {
         $payload = $request->validated();
 
-       $user = $this->repository->updateUser($userId, $payload);
-       return $this->success();
+        $user = $this->repository->updateUser($userId, $payload);
+        return $this->success();
     }
 
     public function deleteUser(int $userId): JsonResponse
     {
 
-        if($this->checkIfIsMe($userId)){
+        if ($this->checkIfIsMe($userId)) {
             return $this->error(['msg' => 'Você não pode se excluir']);
         }
 
@@ -54,7 +54,7 @@ class UserController extends Controller
 
     public function checkIfIsMe(int $id): bool
     {
-        if(\Auth::user()->id == $id){
+        if (\Auth::user()->id == $id) {
             return true;
         }
 

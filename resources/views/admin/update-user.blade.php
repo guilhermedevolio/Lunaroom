@@ -130,7 +130,7 @@
                 <form id="form-wallet" method="POST">
                     <div class="mb-3">
                         <label class="form-label">Créditos</label>
-                        <input type="text" name="credits" class="form-control"  value="{{$user->wallet->credits}}">
+                        <input type="text" name="credits" class="form-control" value="{{$user->wallet->credits}}">
                     </div>
                     <button id="btn-update-wallet" type="submit" class="btn btn-primary mt-3 w-100">Atualizar Carteira
                     </button>
@@ -149,9 +149,6 @@
                     data: form,
                     success: function (callback) {
                         toastr.success('Carteira atualizada com sucesso');
-                        setTimeout(function () {
-                            location.reload();
-                        }, 2000);
                     },
                     error: function (callback) {
                         if (callback.responseJSON.errors) {

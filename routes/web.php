@@ -6,6 +6,8 @@ use \App\Http\Controllers\AdminDashboardController;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\WalletController;
 use \App\Http\Controllers\CampusController;
+use \App\Http\Controllers\CourseController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,7 +19,7 @@ use \App\Http\Controllers\CampusController;
 |
 */
 
-
+//Landing Page Here
 Route::get('/', function () {
     return 'welcome';
 })->name('welcome');
@@ -34,6 +36,7 @@ Route::prefix('auth')->middleware(['only_visitant'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
+    //Campus Routes
     Route::get('/campus', [CampusController::class, 'viewCampus'])->name('campus');
 });
 
@@ -50,5 +53,13 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     //Wallets Routes
     Route::prefix('wallet')->group(function () {
         Route::put('update/{walletId}', [WalletController::class, 'updateWalletAsAdmin'])->name('put-wallet');
+    });
+
+    Route::prefix('course')->group(function() {
+        Route::get('courses', [CourseController::class, 'getCourses'])->name('courses');
+        Route::get('edit/{courseId}', [CourseController::class, 'getCourse'])->name('edit-course');
+        Route::get('new', [CourseController::class, 'viewAddCourse'])->name('add-course');
+        Route::post('new', [CourseController::class, 'postCourse'])->name('post-course');
+        Route::get('delete/{courseId}', [CourseController::class, 'deleteCourse'])->name('delete-course');
     });
 });
