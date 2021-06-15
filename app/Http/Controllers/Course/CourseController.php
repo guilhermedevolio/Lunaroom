@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Course;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCourseRequest;
-use App\Http\Requests\PutCourseRequest;
+use App\Http\Requests\UpdateCourseRequest;
 use App\Repositories\CourseRepository;
 use App\Traits\ResponseTrait;
 use Illuminate\Contracts\Foundation\Application;
@@ -51,7 +51,7 @@ class CourseController extends Controller
     }
 
 
-    public function putCourse(PutCourseRequest $request, int $courseId): JsonResponse
+    public function putCourse(UpdateCourseRequest $request, int $courseId): JsonResponse
     {
         $payload = $request->validated();
 

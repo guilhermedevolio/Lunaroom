@@ -6,13 +6,12 @@ namespace App\Repositories;
 
 use App\Models\Course;
 use App\Traits\UploaderFileTrait;
-use Illuminate\Support\Facades\Storage;
 
 class CourseRepository
 {
     use UploaderFileTrait;
 
-    protected $model;
+    protected Course $model;
 
     public function __construct(Course $model)
     {

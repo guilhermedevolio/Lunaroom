@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthLoginRequest;
-use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\PostUserRequest;
 use App\Repositories\AuthRepository;
 use App\Traits\ResponseTrait;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -48,7 +48,7 @@ class AuthController extends Controller
         }
     }
 
-    public function postUser(RegisterUserRequest $request): JsonResponse
+    public function postUser(PostUserRequest $request): JsonResponse
     {
         $payload = $request->validated();
 

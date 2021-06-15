@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method create(array $payload)
+ * @method findOrFail($courseId)
+ */
 class Course extends Model
 {
     use HasFactory;

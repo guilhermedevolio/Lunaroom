@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PutCourseRequest extends FormRequest
+class PostTransactionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class PutCourseRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'description' => 'required',
-            'image' => 'mimes:jpg,jpeg,png',
-            'price' => 'required|integer'
+            'payee_username' => 'required|exists:users,username',
+            'amount' => 'required|integer'
         ];
     }
 }

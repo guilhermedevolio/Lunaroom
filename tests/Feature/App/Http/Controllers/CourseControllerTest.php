@@ -29,7 +29,6 @@ class CourseControllerTest extends TestCase
         $response = $this->get(route('add-course'));
 
         //Assert
-
         $response->assertOk();
         $response->assertSee('Cadastrar Novo Curso');
     }

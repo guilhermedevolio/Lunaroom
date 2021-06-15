@@ -1,14 +1,15 @@
 <?php
 
+use App\Http\Controllers\Transactions\TransactionController;
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\Auth\AuthController;
-use \App\Http\Controllers\Admin\AdminDashboardController;
-use \App\Http\Controllers\User\UserController;
-use \App\Http\Controllers\User\WalletController;
-use \App\Http\Controllers\Campus\CampusController;
-use \App\Http\Controllers\Course\CourseController;
-use \App\Http\Controllers\Course\ModuleController;
-use \App\Http\Controllers\Course\LessonController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\WalletController;
+use App\Http\Controllers\Campus\CampusController;
+use App\Http\Controllers\Course\CourseController;
+use App\Http\Controllers\Course\ModuleController;
+use App\Http\Controllers\Course\LessonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,11 @@ Route::middleware(['auth'])->group(function () {
 
     //Campus Routes
     Route::get('/campus', [CampusController::class, 'viewCampus'])->name('campus');
+
+    Route::prefix('transaction')->group(function() {
+        Route::post('new', [TransactionController::class, 'postTransaction'])->name('post-transaction');
+        Route::get('my-transactions', [TransactionController::class, 'getUserLoggedTransactions'])->name('get-transactions');
+    });
 });
 
 //Admin Routes
@@ -74,6 +80,8 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     });
 
     Route::prefix('lesson')->group(function () {
-        Route::post('/new', [LessonController::class, 'postLesson'])->name('post-lesson');
+        Route::post('new', [LessonController::class, 'postLesson'])->name('post-lesson');
+        Route::put('edit/{lessonId}', [LessonController::class, 'putLesson'])->name('put-lesson');
+        Route::get('delete/{lessonId}', [LessonController::class, 'deleteLesson'])->name('delete-lesson');
     });
 });

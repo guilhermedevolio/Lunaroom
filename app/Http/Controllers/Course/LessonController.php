@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Course;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostLessonRequest;
+use App\Http\Requests\UpdateLessonRequest;
 use App\Repositories\LessonRepository;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
@@ -24,6 +25,22 @@ class LessonController extends Controller
         $payload = $request->validated();
 
         $this->repository->createLesson($payload);
+
+        return $this->success();
+    }
+
+    public function putLesson(UpdateLessonRequest $request, $lessonId): JsonResponse
+    {
+        $payload = $request->validated();
+
+        $this->repository->updateLesson($payload, $lessonId);
+
+        return $this->success();
+    }
+
+    public function deleteLesson($lessonId): JsonResponse
+    {
+        $this->repository->deleteLessson($lessonId);
 
         return $this->success();
     }
