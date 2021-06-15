@@ -20,6 +20,7 @@
                     <div class="mb-3">
                         <h2>Editar Usuário {{$user->name}}</h2>
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Nome</label>
                         <input type="text" class="form-control" name="name" value="{{$user->name}}">
@@ -29,6 +30,7 @@
                         <label class="form-label">Username</label>
                         <input type="text" class="form-control" name="username" value="{{$user->username}}">
                     </div>
+
                     <div class="mb-3">
                         <label class="form-label">Email</label>
                         <input type="text" class="form-control" name="email" value="{{$user->email}}">

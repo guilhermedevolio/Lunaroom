@@ -104,8 +104,10 @@ class AuthControllerTest extends TestCase
 
     public function test_client_should_register()
     {
+
         //Prepare
         Mail::fake();
+
 
         $payload = [
             'name' => 'TestUser',
@@ -116,6 +118,7 @@ class AuthControllerTest extends TestCase
 
         //Act
         $response = $this->post(route('post.register'), $payload);
+
 
         //Assert
         $response->assertOk();

@@ -3,15 +3,58 @@
 @section('content')
     <h2 class="mt-3">Gerenciar - {{$module->name}}</h2>
     <div class="card p-3">
-        <form action="">
+        <form action="" id="form-put-module">
             <div class="mb-3">
                 <label class="form-label">Nome do Módulo</label>
-                <input type="text" value="{{$module->name}}" name="name" id="module_name" class="form-control"
-                       placeholder="Nome do Módulo">
-                <button class="btn btn-info mt-3">Atualizar</button>
+                <input type="text" value="{{$module->name}}" name="name" class="form-control" placeholder="Nome do Módulo">
+                <button id="btn-update-module" class="btn btn-info mt-3">Atualizar</button>
+                <button id="btn-delete-module" class="btn btn-danger mt-3">Deletar Módulo</button>
             </div>
         </form>
     </div>
+
+    {{--  Delete Module Script  --}}
+    <script>
+        $('#btn-delete-module').click(function (e) {
+            e.preventDefault();
+            const assert = confirm('Certeza que deseja excluir o módulo ?');
+
+            if (assert) {
+                toastr.success('Redirecionando ...', 'Módulo Deletado com sucesso')
+                setTimeout(() => {
+                    location.href = "{{route('delete-module', $module->id)}}"
+                }, 1000)
+            }
+        });
+    </script>
+    {{--  Update Module Script  --}}
+    <script>
+        $('#btn-update-module').click(function(e) {
+            e.preventDefault();
+            const payload = $('#form-put-module').serialize();
+
+            $.ajax({
+                url: "{{route('put-module', $module->id)}}",
+                method: 'PUT',
+                data: payload,
+                success: (callback) => {
+                    toastr.success("Atualizando a Página", "Módulo Atualizado com sucesso");
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                },
+                error: (callback) => {
+                    if (callback.responseJSON.errors) {
+                        $.each(callback.responseJSON.errors, function (key, value) {
+                            toastr.error(value);
+                        });
+                    } else {
+                        toastr.error('Erro ao atualizar módulo')
+                    }
+                }
+            });
+        })
+    </script>
 
     {{-- Lessons  --}}
     <div class="d-flex justify-content-between mt-4 mb-3">
@@ -25,52 +68,50 @@
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
+
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Cadastrar Aula</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+
                     <div class="modal-body">
+
                         <form id="form-lesson">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Nome da Aula</label>
-                                <input id="title" type="text" name="title" class="form-control"
-                                       id="exampleInputEmail1"
-                                       aria-describedby="emailHelp"></input>
+                                <input id="title" type="text" name="title" class="form-control"></input>
                             </div>
+
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Descrição da Aula</label>
-                                <textarea id="description" type="text" name="description" class="form-control"
-                                          id="exampleInputEmail1"
-                                          aria-describedby="emailHelp"></textarea>
+                                <textarea id="description" type="text" name="description" class="form-control"  aria-describedby="emailHelp"></textarea>
                             </div>
+
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Provedor do Vídeo</label>
-                                <select id="select-provider" name="video_provider" class="form-select"
-                                        aria-label="Default select example">
+                                <select id="select-provider" name="video_provider" class="form-select"   aria-label="Default select example">
                                     <option value="999">Selecione uma opção</option>
                                     <option value="{{\App\Enums\LessonEnum::PROVIDER_YOUTUBE}}">YouTube</option>
                                     <option value="{{\App\Enums\LessonEnum::PROVIDER_VIMEO}}">Vimeo</option>
                                 </select>
                             </div>
+
                             <div id="input_youtube" style="display: none;" class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Link do Vídeo
-                                    (YouTube)</label>
-                                <input id="input_link_youtube" type="text" class="form-control" id="exampleInputEmail1"
-                                       aria-describedby="emailHelp"></input>
+                                <label class="form-label">Link do Vídeo(YouTube)</label>
+                                <input id="input_link_youtube" type="text" class="form-control" >
                             </div>
+
                             <div id="input_vimeo" style="display: none;" class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Link do Vídeo (Vimeo)</label>
-                                <input id="input_link_vimeo" type="text" class="form-control"
-                                       aria-describedby="emailHelp"></input>
+                                <label class="form-label">Link do Vídeo (Vimeo)</label>
+                                <input id="input_link_vimeo" type="text" class="form-control">
                             </div>
+
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Data Liberação Aula</label>
-                                <input id="init_date" type="date" name="init_date" class="form-control"
-                                       aria-describedby="emailHelp"></input>
-
-
+                                <label class="form-label">Data Liberação Aula</label>
+                                <input id="init_date" type="date" name="init_date" class="form-control" >
                             </div>
                         </form>
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -137,7 +178,4 @@
             });
         })
     </script>
-    <div class="card p-3">
-
-    </div>
 @endsection

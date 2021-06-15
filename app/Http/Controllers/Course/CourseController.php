@@ -7,13 +7,17 @@ use App\Http\Requests\PostCourseRequest;
 use App\Http\Requests\PutCourseRequest;
 use App\Repositories\CourseRepository;
 use App\Traits\ResponseTrait;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 
 class CourseController extends Controller
 {
     use ResponseTrait;
 
-    protected $repository;
+    protected CourseRepository $repository;
 
     public function __construct(CourseRepository $repository)
     {
@@ -31,7 +35,7 @@ class CourseController extends Controller
         return view('admin.course.courses', compact('courses'));
     }
 
-    public function postCourse(PostCourseRequest $request)
+    public function postCourse(PostCourseRequest $request): Redirector|Application|RedirectResponse
     {
         $payload = $request->validated();
 
@@ -47,7 +51,7 @@ class CourseController extends Controller
     }
 
 
-    public function putCourse(PutCourseRequest $request, int $courseId)
+    public function putCourse(PutCourseRequest $request, int $courseId): JsonResponse
     {
         $payload = $request->validated();
 
@@ -57,9 +61,9 @@ class CourseController extends Controller
     }
 
 
-    public function deleteCourse(int $courseId)
+    public function deleteCourse(int $courseId): Redirector|Application|RedirectResponse
     {
-        $response = $this->repository->deleteCourse($courseId);
+        $this->repository->deleteCourse($courseId);
 
         return redirect(route('courses'));
     }

@@ -8,13 +8,16 @@ use App\Http\Requests\RegisterUserRequest;
 use App\Repositories\AuthRepository;
 use App\Traits\ResponseTrait;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class AuthController extends Controller
 {
-    protected $repository;
+    protected AuthRepository $repository;
 
     use ResponseTrait;
 
@@ -41,7 +44,7 @@ class AuthController extends Controller
             $this->repository->authenticate($credentials);
             return $this->success();
         } catch (AuthorizationException $ex) {
-            return $this->unauthorized();
+            return $this->unauthorized(['msg' => $ex->getMessage()]);
         }
     }
 
@@ -50,10 +53,11 @@ class AuthController extends Controller
         $payload = $request->validated();
 
         $response = $this->repository->registerUser($payload);
-        return response()->json($response, 200);
+
+        return new JsonResponse($response);
     }
 
-    public function logout()
+    public function logout(): Redirector|Application|RedirectResponse
     {
         Auth::logout();
         return redirect(route('login'));

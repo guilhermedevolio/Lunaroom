@@ -5,6 +5,7 @@ namespace Tests\Feature\App\Http\Controllers;
 
 
 use App\Models\Course;
+use App\Models\Module;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -39,7 +40,67 @@ class ModuleControllerTest extends TestCase
             'course_id' => $course->id,
             'name' => $payload["name"]
         ]);
+    }
 
+    public function test_admin_can_get_module()
+    {
+        // Prepare
+        $user = User::factory()->create(['admin' => '1']);
+        $course = Course::factory()->create();
+        $module = Module::create(['course_id' => $course->id, 'name' => 'Module_Test']);
+        $this->actingAs($user);
+
+        //Act
+        $response = $this->get(route('get-module', $module->id));
+
+        //Assert
+        $response->assertViewIs('admin.course.module.edit')
+            ->assertViewHas('module')
+            ->assertSee("Gerenciar - $module->name");
+
+    }
+
+    public function test_admin_can_update_module()
+    {
+        // Prepare
+        $user = User::factory()->create(['admin' => '1']);
+        $course = Course::factory()->create();
+        $module = Module::create(['course_id' => $course->id, 'name' => 'Module_Test']);
+        $this->actingAs($user);
+
+        $payload = [
+            'name' => 'Module_Test_Updated'
+        ];
+
+        // Act
+        $response = $this->put(route('put-module', $module->id), $payload);
+
+
+        //Assert
+        $response->assertOk();
+        $this->assertDatabaseHas('modules', [
+            'name' => 'Module_Test_Updated'
+        ]);
+    }
+
+
+    public function test_admin_can_delete_module()
+    {
+        // Prepare
+        $user = User::factory()->create(['admin' => '1']);
+        $course = Course::factory()->create();
+        $module = Module::create(['course_id' => $course->id, 'name' => 'Module_Test']);
+
+        $this->actingAs($user);
+
+        //Act
+        $response = $this->get(route('delete-module', $module->id));
+
+        //Assert
+        $response->assertRedirect(route('courses'));
+        $this->assertDatabaseMissing('modules', [
+            'name' => $module->name
+        ]);
     }
 
 }

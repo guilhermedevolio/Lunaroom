@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @method create(array $payload)
+ */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
