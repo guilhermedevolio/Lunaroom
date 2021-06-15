@@ -32,17 +32,31 @@ class CourseRepository
         return $this->model->get();
     }
 
-    public function getCourse(int $id)
+    public function getCourse($id)
     {
         return $this->model->with('modules')->findOrFail($id);
     }
 
-    public function deleteCourse(int $courseId)
+    public function deleteCourse($courseId)
     {
         $course = $this->model->findOrFail($courseId);
 
         $this->delete('courses/', $course->image);
 
         return $course->delete();
+    }
+
+    public function putCourse($payload, $courseId)
+    {
+        $course = $this->model->findOrFail($courseId);
+
+        if (isset($payload["image"])) {
+            $this->delete('courses/', $course->image);
+            $fileName = $this->upload('courses/', $payload["image"]);
+
+            $payload["image"] = $fileName;
+        }
+
+        return $course->update($payload);
     }
 }

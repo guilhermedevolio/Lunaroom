@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Course;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCourseRequest;
+use App\Http\Requests\PutCourseRequest;
 use App\Repositories\CourseRepository;
 use App\Traits\ResponseTrait;
-use App\Traits\UploaderFileTrait;
-use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
 class CourseController extends Controller
@@ -40,11 +40,22 @@ class CourseController extends Controller
         return redirect(route('courses'));
     }
 
-    public function getCourse(int $courseId): View
+    public function getCourse($courseId): View
     {
         $course = $this->repository->getCourse($courseId);
         return view('admin.course.edit', compact('course'));
     }
+
+
+    public function putCourse(PutCourseRequest $request, int $courseId)
+    {
+        $payload = $request->validated();
+
+        $this->repository->putCourse($payload, $courseId);
+
+        return $this->success();
+    }
+
 
     public function deleteCourse(int $courseId)
     {

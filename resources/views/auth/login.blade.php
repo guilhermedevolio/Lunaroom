@@ -1,5 +1,11 @@
 @yield('head', View::make('layouts.components.head'))
-
+<style>
+    body{
+        background-image: url({{asset('src/img/bg.jpg')}});
+        background-size:cover ;
+        width: 100%;
+    }
+</style>
 <body class="antialiased border-top-wide border-primary d-flex flex-column">
 <div class="page page-center">
     <div class="container-tight py-4">

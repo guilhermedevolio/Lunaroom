@@ -18,8 +18,9 @@ class CreateLessonsTable extends Migration
             $table->foreignId('module_id')->references('id')->on('modules')->onDelete('cascade');
             $table->string('title');
             $table->string('description');
-            $table->string('image');
-            $table->integer('price');
+            $table->string('provider_video');
+            $table->string('video_link');
+            $table->date('init_date')->default(\Carbon\Carbon::now());
             $table->timestamps();
         });
     }

@@ -1,4 +1,11 @@
 @yield('head', View::make('layouts.components.head'))
+<style>
+    body{
+        background-image: url({{asset('src/img/bg.jpg')}});
+        background-size:cover ;
+        width: 100%;
+    }
+</style>
 <body class="antialiased border-top-wide border-primary d-flex flex-column">
 <div class="page page-center">
     <div id="card-form-register" class="container-tight py-4">
@@ -44,7 +51,7 @@
                 </div>
             </div>
         </form>
-        <div class="text-center text-muted mt-3">
+        <div class="text-center text-muted mt-3 text-white">
             Já tem uma conta ? <a href="{{route('login')}}" tabindex="-1">Login</a>
         </div>
     </div>

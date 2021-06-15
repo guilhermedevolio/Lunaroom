@@ -10,6 +10,6 @@ class Lesson extends Model
     use HasFactory;
 
     protected $fillable = [
-        'module_id', 'title', 'provider_video', 'description'
+       'module_id', 'title', 'description', 'provider_video', 'video_link', 'init_date'
     ];
 }

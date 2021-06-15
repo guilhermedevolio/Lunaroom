@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\AuthController;
-use \App\Http\Controllers\AdminDashboardController;
-use \App\Http\Controllers\UserController;
-use \App\Http\Controllers\WalletController;
-use \App\Http\Controllers\CampusController;
-use \App\Http\Controllers\CourseController;
+use \App\Http\Controllers\Auth\AuthController;
+use \App\Http\Controllers\Admin\AdminDashboardController;
+use \App\Http\Controllers\User\UserController;
+use \App\Http\Controllers\User\WalletController;
+use \App\Http\Controllers\Campus\CampusController;
+use \App\Http\Controllers\Course\CourseController;
+use \App\Http\Controllers\Course\ModuleController;
+use \App\Http\Controllers\Course\LessonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,11 +57,21 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
         Route::put('update/{walletId}', [WalletController::class, 'updateWalletAsAdmin'])->name('put-wallet');
     });
 
-    Route::prefix('course')->group(function() {
+    Route::prefix('course')->group(function () {
         Route::get('courses', [CourseController::class, 'getCourses'])->name('courses');
-        Route::get('edit/{courseId}', [CourseController::class, 'getCourse'])->name('edit-course');
         Route::get('new', [CourseController::class, 'viewAddCourse'])->name('add-course');
         Route::post('new', [CourseController::class, 'postCourse'])->name('post-course');
+        Route::get('edit/{courseId}', [CourseController::class, 'getCourse'])->name('edit-course');
+        Route::put('edit/{courseId}', [CourseController::class, 'putCourse'])->name('put-course');
         Route::get('delete/{courseId}', [CourseController::class, 'deleteCourse'])->name('delete-course');
+    });
+
+    Route::prefix('module')->group(function () {
+        Route::post('new', [ModuleController::class, 'postModule'])->name('post-module');
+        Route::get('edit/{moduleId}', [ModuleController::class, 'getModule'])->name('get-module');
+    });
+
+    Route::prefix('lesson')->group(function () {
+        Route::post('/new', [LessonController::class, 'postLesson'])->name('post-lesson');
     });
 });

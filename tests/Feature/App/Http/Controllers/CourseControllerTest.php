@@ -98,6 +98,56 @@ class CourseControllerTest extends TestCase
         $response->assertSee('Gerenciar Curso');
     }
 
+    public function test_admin_can_update_course()
+    {
+        // Prepare
+        Storage::fake('public');
+
+        $user = User::factory()->create(['admin' => '1']);
+        $course = Course::factory()->create();
+
+        $file = UploadedFile::fake()->image('test.jpg');
+
+        $this->actingAs($user);
+
+        $payload = [
+            'title' => 'NewTitle',
+            'description' => 'NewDescription',
+            'image' => $file,
+            'price' => '300'
+        ];
+
+        Storage::shouldReceive('disk')
+            ->once()
+            ->with(m::type('string'))
+            ->andReturnSelf();
+
+        Storage::shouldReceive('delete')
+            ->once()
+            ->withAnyArgs();
+
+        Storage::shouldReceive('disk')
+            ->once()
+            ->with(m::type('string'))
+            ->andReturnSelf();
+
+        Storage::shouldReceive('putFileAs')
+            ->once()
+            ->with(m::type('string'), $file, m::type('string'));
+
+        // Act
+        $response = $this->put(route('put-course', $course->id), $payload);
+
+        //Assert
+        $response->assertOk();
+        $this->assertDatabaseHas('courses', [
+            'id' => $course->id,
+            'title' => $payload["title"],
+            'description' => $payload["description"]
+        ]);
+
+    }
+
     public function test_admin_can_delete_course()
     {
         // Prepare

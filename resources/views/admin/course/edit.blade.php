@@ -2,7 +2,9 @@
 
 @section('content')
     <h2 class="mt-3 ">Gerenciar Curso - {{$course->title}}</h2>
-    <form action="{{route('post-course')}}" id="form" method="POST" class="mb-4" enctype="multipart/form-data">
+    <form action="{{route('put-course', $course->id)}}" id="form" method="POST" class="mb-4"
+          enctype="multipart/form-data">
+        {{method_field('PUT')}}
         {{csrf_field()}}
         <div class="card p-3">
             <img src="{{asset("storage/courses/$course->image")}}" class="img-fluid w-25 rounded-1 pb-3" alt="">
@@ -26,14 +28,14 @@
                 <input type="file" name="image" class="form-control">
             </div>
 
-            <button id="btn-post" type="submit" class="btn btn-primary mt-3 w-100">Atualizar Dados
+            <button id="btn-post" type="submit" class="btn btn-primary mt-3 w-100 mb-3">Atualizar Dados
             </button>
             <a id="btn-delete-course" class="btn btn-danger">Excluir
                 Curso</a>
         </div>
     </form>
     <script>
-        $('#btn-delete-course').click(function(e) {
+        $('#btn-delete-course').click(function (e) {
             e.preventDefault();
             const assert = confirm('Certeza que deseja excluir o curso ?');
 
@@ -67,8 +69,8 @@
                     <div class="modal-body">
                         <form>
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Nome do Módulo</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1"
+                                <label  for="exampleInputEmail1" class="form-label">Nome do Módulo</label>
+                                <input id="module_name" type="text" class="form-control" id="exampleInputEmail1"
                                        aria-describedby="emailHelp">
                             </div>
                         </form>
@@ -81,6 +83,38 @@
             </div>
         </div>
 
+        <script>
+            $('#btn-post-module').click((e) => {
+                e.preventDefault();
+                const course_id = "{{$course->id}}";
+                const module_name = $('#module_name').val();
+
+                $.ajax({
+                    url: "{{route('post-module')}}",
+                    method: 'POST',
+                    data: {
+                        course_id: course_id,
+                        name: module_name
+                    },
+                    success: (callback) => {
+                        toastr.success('Atualizado a Página ...', 'Módulo Cadastrado com Sucesso');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 3000);
+
+                    },
+                    error: (callback) => {
+                        if(callback.responseJSON.errors){
+                            $.each(callback.responseJSON.errors, function (key, value) {
+                                toastr.error(value);
+                            });
+                        }else {
+                            console.log(callback);
+                        }
+                    }
+                })
+            })
+        </script>
 
     </div>
     <div class="card pt-3 mb-3">
@@ -98,7 +132,7 @@
                     <tr>
                         <td>{{$module->id}}</td>
                         <td>{{$module->name}}</td>
-                        <td><a href="">Gerenciar</a></td>
+                        <td><a href="{{route('get-module', $module->id)}}">Gerenciar</a></td>
                     </tr>
                 @endforeach
                 </tbody>
