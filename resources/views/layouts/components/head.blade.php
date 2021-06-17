@@ -7,16 +7,24 @@
     <title>Lunaroom</title>
     <!-- CSS files -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <link href="{{asset('dist/css/tabler.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('dist/css/tabler.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('dist/css/tabler-flags.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('dist/css/tabler-payments.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('dist/css/tabler-vendors.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('dist/css/demo.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('src/toastr/toastr.css')}}" rel="stylesheet"/>
     <script src="{{asset('src/toastr/toastr.min.js')}}"></script>
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
-    <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="{{asset('plugins/datatables/jquery.dataTables.min.css')}}">
+    <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 </head>
+<style>
+    table.dataTable.no-footer{
+        border-bottom: 1px solid #ccc;
+    }
+    tbody, td, tfoot, th, thead{
+        border: none;
+    }
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.8.1/tinymce.min.js"></script>
 <script>
     toastr.options = {
@@ -43,6 +51,12 @@
         }
     });
 
+
+    $.extend( true, $.fn.dataTable.defaults, {
+        "searching": true,
+        "ordering": true,
+    });
+
     tinymce.init({
         selector: 'textarea',
         plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
@@ -54,6 +68,9 @@
             });
         }
     });
+
+
+
 
 
 </script>

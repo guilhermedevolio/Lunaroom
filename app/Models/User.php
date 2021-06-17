@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Notification\Notification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -55,6 +56,16 @@ class User extends Authenticatable
     public function wallet()
     {
         return $this->hasOne(Wallet::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'users_courses', 'user_id', 'course_id');
     }
 
 

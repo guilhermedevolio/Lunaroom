@@ -12,8 +12,8 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Descrição</label>
-                <input type="text" class="form-control" name="description">
+                <label class="form-label">Descrição do Curso</label>
+                <textarea name="description"></textarea>
             </div>
 
             <div class="mb-3">

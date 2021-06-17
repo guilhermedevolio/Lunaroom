@@ -3,7 +3,7 @@
 @yield('header', View::make('campus.components.header'))
 
 <div class="page-wrapper">
-    <div class="container-xl">
+    <div>
         @yield('content')
     </div>
 </div>

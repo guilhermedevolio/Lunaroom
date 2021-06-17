@@ -38,10 +38,16 @@ class LessonController extends Controller
         return $this->success();
     }
 
-    public function deleteLesson($lessonId): JsonResponse
+    public function deleteLesson($lessonId)
     {
         $this->repository->deleteLessson($lessonId);
 
-        return $this->success();
+        return redirect(route('courses'));
+    }
+
+    public function getLesson($lessonId)
+    {
+        $lesson = $this->repository->getLesson($lessonId);
+        return view('admin.course.lesson.edit', compact('lesson'));
     }
 }

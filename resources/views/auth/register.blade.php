@@ -47,7 +47,11 @@
                     </div>
                 </div>
                 <div class="form-footer">
-                    <button type="submit" class="btn btn-primary w-100">Criar minha conta</button>
+                    <button type="submit" id="btn-register" class="btn btn-primary w-100">Criar minha conta</button>
+                    <button id="btn-loading"  style="display: none" class="btn btn-primary w-100" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Criando sua conta
+                    </button>
                 </div>
             </div>
         </form>
@@ -66,6 +70,7 @@
                 <p>Agora você faz parte da Lunaroom,  uma comunidade linda e maravilhosa de Programação</p>
                 <p>Enviamos um email para você, de uma olhada lá depois</p>
                 <a href="{{route('login')}}" type="submit" class="btn btn-primary w-100">Fazer Login</a>
+
             </div>
         </div>
     </div>
@@ -73,6 +78,8 @@
 <script>
     $('#form-register').on('submit', function (e) {
         e.preventDefault();
+        $('#btn-register').hide();
+        $('#btn-loading').show();
         const payload = $(this).serialize();
         $.ajax({
             url: "{{route('post.register')}}",
@@ -85,6 +92,8 @@
                 toastr.success("Conta criada com sucesso");
             },
             error: function (callback) {
+                $('#btn-register').show();
+                $('#btn-loading').hide();
                 $.each(callback.responseJSON.errors, function (key, value) {
                     toastr.error(value);
                 });

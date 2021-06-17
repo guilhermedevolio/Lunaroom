@@ -6,12 +6,15 @@ namespace App\Repositories;
 
 use App\Models\Course;
 use App\Traits\UploaderFileTrait;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class CourseRepository
 {
-    use UploaderFileTrait;
-
     protected Course $model;
+
+    use UploaderFileTrait;
 
     public function __construct(Course $model)
     {
@@ -26,14 +29,14 @@ class CourseRepository
         return $this->model->create($payload);
     }
 
-    public function getCourses()
+    public function getCourses(): Collection|array
     {
-        return $this->model->get();
+        return $this->model->all();
     }
 
-    public function getCourse($id)
+    public function getCourse($id): Model|Collection|Builder|array|null
     {
-        return $this->model->with('modules')->findOrFail($id);
+        return $this->model->with(['modules.lessons'])->findOrFail($id);
     }
 
     public function deleteCourse($courseId)

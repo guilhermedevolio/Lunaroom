@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Notification\NotificationController;
+use App\Http\Controllers\Store\StoreController;
 use App\Http\Controllers\Transactions\TransactionController;
+use App\Http\Controllers\Voucher\VoucherController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -24,7 +27,7 @@ use App\Http\Controllers\Course\LessonController;
 
 //Landing Page Here
 Route::get('/', function () {
-    return 'welcome';
+    return view('welcome');
 })->name('welcome');
 
 //Authentication Routes
@@ -35,17 +38,23 @@ Route::prefix('auth')->middleware(['only_visitant'])->group(function () {
     Route::post('register', [AuthController::class, 'postUser'])->name('post.register');
 });
 
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
 //User Routes
 Route::middleware(['auth'])->group(function () {
-    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-
-    //Campus Routes
     Route::get('/campus', [CampusController::class, 'viewCampus'])->name('campus');
-
-    Route::prefix('transaction')->group(function() {
+    Route::prefix('transaction')->group(function () {
         Route::post('new', [TransactionController::class, 'postTransaction'])->name('post-transaction');
         Route::get('my-transactions', [TransactionController::class, 'getUserLoggedTransactions'])->name('get-transactions');
     });
+    Route::prefix('course')->group(function () {
+        Route::get('/my', [CourseController::class, 'getMyCourses'])->name('my-courses');
+        Route::get('/{courseId}', [CourseController::class, 'getCourseWebsite'])->name('get-course');
+    });
+    Route::get('/store', [StoreController::class, 'getCourses'])->name('store');
+    Route::get('notifications', [NotificationController::class, 'getNotificationsByUserId'])->name('get-notifications');
+    Route::get('/redeem-voucher', [VoucherController::class, 'viewRedeemVoucher'])->name('get-redeem-voucher');
+    Route::post('/redeem-voucher', [VoucherController::class, 'redeemVoucher'])->name('redeem-voucher');
 });
 
 //Admin Routes
@@ -81,7 +90,13 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
 
     Route::prefix('lesson')->group(function () {
         Route::post('new', [LessonController::class, 'postLesson'])->name('post-lesson');
+        Route::get('edit/{lessonId}', [LessonController::class, 'getLesson'])->name('get-lesson');
         Route::put('edit/{lessonId}', [LessonController::class, 'putLesson'])->name('put-lesson');
         Route::get('delete/{lessonId}', [LessonController::class, 'deleteLesson'])->name('delete-lesson');
+    });
+
+    Route::prefix('voucher')->group(function () {
+        Route::get('/', [VoucherController::class, 'viewCreateVoucher'])->name('create-voucher');
+        Route::post('/', [VoucherController::class, 'postVoucher'])->name('post-voucher');
     });
 });

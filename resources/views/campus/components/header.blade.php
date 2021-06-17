@@ -1,4 +1,7 @@
 @yield('head', View::make('layouts.components.head'))
+<style>
+
+</style>
 <body class="antialiased">
 <div class="wrapper">
     <header class="navbar navbar-expand-md navbar-dark d-print-none">
@@ -24,6 +27,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                         <a href="#" class="dropdown-item">Perfil</a>
+                        <a href="{{route('get-notifications')}}" class="dropdown-item">Notificações</a>
                         <a href="{{route('logout')}}" class="dropdown-item">Logout</a>
                         @if(Auth::user()->admin)
                             <a href="{{route('dash.admin')}}" class="dropdown-item">Admin</a>
@@ -39,7 +43,7 @@
                 <div class="container-xl">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{route('login')}}">
+                            <a class="nav-link" href="{{route('campus')}}">
                     <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
@@ -73,11 +77,8 @@
                             <div class="dropdown-menu">
                                 <div class="dropdown-menu-columns">
                                     <div class="dropdown-menu-column">
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{route('my-courses')}}">
                                             Meus Cursos
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            Estatísticas
                                         </a>
                                     </div>
                                 </div>
@@ -103,13 +104,13 @@
                             <div class="dropdown-menu">
                                 <div class="dropdown-menu-columns">
                                     <div class="dropdown-menu-column">
-                                        <a class="dropdown-item" href="{{route('get-transactions')}}">
+                                        <a class="dropdown-item" href="{{route('store')}}">
                                             Produtos
                                         </a>
                                         <a class="dropdown-item" href="#">
                                             Histórico de Compras
                                         </a>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{route('my-courses')}}">
                                             Meus Produtos
                                         </a>
                                     </div>

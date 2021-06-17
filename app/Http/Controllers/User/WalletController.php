@@ -22,6 +22,7 @@ class WalletController extends Controller
     public function updateWalletAsAdmin(UpdateWalletRequest $request, int $walletId): JsonResponse
     {
         $payload = $request->validated();
+        
         $this->repository->updateWallet($payload, $walletId);
 
         return $this->success();

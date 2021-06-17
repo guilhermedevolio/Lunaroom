@@ -39,7 +39,7 @@ class AuthControllerTest extends TestCase
     {
         $response = $this->get(route('login'));
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_client_can_not_see_login_page()
@@ -82,7 +82,7 @@ class AuthControllerTest extends TestCase
         $response = $this->post(route('post.login'), $payload);
 
         //Assert
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     public function test_client_can_not_should_authenticate()
@@ -99,7 +99,7 @@ class AuthControllerTest extends TestCase
         $response = $this->post(route('post.login'), $payload);
 
         //Assert
-        $response->assertStatus(401);
+        $response->assertUnauthorized();
     }
 
     public function test_client_should_register()

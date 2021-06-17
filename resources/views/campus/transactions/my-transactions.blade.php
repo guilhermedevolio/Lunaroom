@@ -1,6 +1,8 @@
 @extends('layouts.campus')
 
 @section('content')
+    <div class="container-xl">
+
     <h1 class="mt-5 text-center" style="font-size: 40px">Minha Carteira</h1>
     <p class="text-center">Atividades da sua Carteira </p>
     <h2 class="text-center font-weight-bold">Seus Créditos: {{Auth::user()->wallet->credits}}</h2>
@@ -88,7 +90,7 @@
         })
     </script>
 
-    <div class="card mt-3">
+    <div class="card mt-3 shadow">
         <ul class="nav nav-tabs navbar-dark text-white shadow" data-bs-toggle="tabs">
             <li class="nav-item">
                 <a href="#tabs-home-9" class="nav-link active rounded-0" data-bs-toggle="tab"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
@@ -104,7 +106,7 @@
                 <div class="tab-pane show active" id="tabs-home-9">
                     <h2>Entradas</h2>
                     <div class="table-responsive">
-                        <table id="table" class="table table-vcenter card-table">
+                        <table id="table" class="table table-vcenter card-table cell-border stripe">
                             <thead>
                             <tr>
                                 <th>Valor</th>
@@ -114,7 +116,7 @@
                             </thead>
                             <tbody>
                             @foreach($transactions["receipts"] as $receipt)
-                                <tr>
+                                <tr style="border-bottom: 0">
                                     <td>{{$receipt->amount}}</td>
                                     <td class="text-muted">
                                         {{$receipt->walletPayer->user->username}}
@@ -131,7 +133,7 @@
                 <div class="tab-pane" id="tabs-profile-9">
                     <h2>Saídas</h2>
                     <div class="table-responsive">
-                        <table id="table-2" class="table table-vcenter card-table">
+                        <table id="table-2" class="table table-vcenter card-table cell-border stripe">
                             <thead>
                             <tr>
                                 <th>Valor</th>
@@ -158,6 +160,7 @@
         </div>
     </div>
 
+    </div>
 
     <script>
         $('#table').DataTable();

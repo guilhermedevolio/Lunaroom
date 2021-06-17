@@ -15,7 +15,7 @@
 
             <div class="mb-3">
                 <label class="form-label">Descrição</label>
-                <input type="text" class="form-control" value="{{$course->description}}" name="description">
+                <textarea name="description" id="" cols="30" rows="10">{{$course->description}}</textarea>
             </div>
 
             <div class="mb-3">

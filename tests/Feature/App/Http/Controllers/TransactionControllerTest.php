@@ -106,7 +106,7 @@ class TransactionControllerTest extends TestCase
         $response = $this->get(route('get-transactions'));
 
         // Assert
-        $response->assertStatus(200)
+        $response->assertOk()
             ->assertViewHas('transactions')
             ->assertSee('Minha Carteira');
 

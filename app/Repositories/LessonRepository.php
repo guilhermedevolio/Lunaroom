@@ -32,5 +32,10 @@ class LessonRepository
         return $this->model->findOrFail($lessonId)->delete();
     }
 
+    public function getLesson($lessonId)
+    {
+        return $this->model->findOrFail($lessonId);
+    }
+
 
 }

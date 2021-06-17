@@ -123,7 +123,7 @@ class LessonControllerTest extends TestCase
         $response = $this->get(route('delete-lesson', $lesson->id));
 
         // Assert
-        $response->assertOk();
+        $response->assertRedirect(route('courses'));
 
         $this->assertDatabaseMissing('lessons', [
             'id' => $lesson->id

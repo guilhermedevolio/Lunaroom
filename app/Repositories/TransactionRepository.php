@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Exceptions\NoCreditsException;
 use App\Exceptions\TransactionDeniedException;
+use App\Http\Controllers\Notification\NotificationController;
 use App\Models\Transactions\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
@@ -38,7 +39,7 @@ class TransactionRepository
             throw new NoCreditsException('Você não possui créditos suficientes', 422);
         }
 
-        if ($this->transactionForMe($payload)) {
+        if ($this->transactionIsForMe($payload)) {
             throw new TransactionDeniedException('Você não pode tranferir para você mesmo', 422);
         }
 
@@ -61,6 +62,9 @@ class TransactionRepository
 
             $payee->notify(new TransactionSuccessNotification($payload, Auth::user()->name));
 
+            $notification = new NotificationController();
+            $notification->new($payee->id, "Você recebeu " . $payload["amount"] . " Lunapoints");
+
             return $transaction;
         });
     }
@@ -80,7 +84,7 @@ class TransactionRepository
         return Auth::user()->wallet;
     }
 
-    private function transactionForMe($payload)
+    private function transactionIsForMe($payload): bool
     {
         return Auth::user()->username == $payload["payee_username"];
     }

@@ -11,6 +11,7 @@ use App\Repositories\TransactionRepository;
 use App\Traits\ResponseTrait;
 use Auth;
 use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 
 class TransactionController extends Controller
 {
@@ -36,7 +37,7 @@ class TransactionController extends Controller
         return response()->json($transaction);
     }
 
-    public function getUserLoggedTransactions()
+    public function getUserLoggedTransactions(): View
     {
        $transactions = $this->repository->getUserLoggedTransactions();
        return view('campus.transactions.my-transactions', compact('transactions'));

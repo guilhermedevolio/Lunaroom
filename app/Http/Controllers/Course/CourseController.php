@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Course;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
+use App\Models\Course;
+use App\Models\User;
+use App\Models\UserCourse;
 use App\Repositories\CourseRepository;
 use App\Traits\ResponseTrait;
 use Illuminate\Contracts\Foundation\Application;
@@ -66,5 +69,32 @@ class CourseController extends Controller
         $this->repository->deleteCourse($courseId);
 
         return redirect(route('courses'));
+    }
+
+    public function getMyCourses()
+    {
+        $courses = $this->getCoursesByUserId(\Auth::user()->id);
+        return view('campus.courses.my-courses', compact('courses'));
+    }
+
+    public function getCourseWebsite($courseId)
+    {
+        $course = $this->repository->getCourse($courseId);
+
+        if(!$this->checkUserHaveCourse($courseId, \Auth::user()->id)){
+            return view('campus.courses.buy',compact('course'));
+        }
+    }
+
+    public function checkUserHaveCourse($courseId, $userId)
+    {
+        return UserCourse::where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->first();
+    }
+
+    public function getCoursesByUserId($id)
+    {
+        return User::where('id', $id)->with('courses')->first();
     }
 }

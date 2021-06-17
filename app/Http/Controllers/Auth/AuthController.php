@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class AuthController extends Controller
@@ -52,9 +53,14 @@ class AuthController extends Controller
     {
         $payload = $request->validated();
 
-        $response = $this->repository->registerUser($payload);
+        try {
+            $response = $this->repository->registerUser($payload);
+            return response()->json($response);
+        } catch (\Exception $e) {
+            Log::critical($e->getMessage());
+            return response()->json('Erro interno no servidor');
+        }
 
-        return new JsonResponse($response);
     }
 
     public function logout(): Redirector|Application|RedirectResponse

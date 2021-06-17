@@ -84,7 +84,7 @@
 
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Descrição da Aula</label>
-                                <textarea id="description" type="text" name="description" class="form-control"  aria-describedby="emailHelp"></textarea>
+                                <textarea  type="text" name="description" class="form-control"  aria-describedby="emailHelp"></textarea>
                             </div>
 
                             <div class="mb-3">
@@ -116,6 +116,10 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                         <button type="button" id="btn-post-lesson" class="btn btn-primary">Cadastrar</button>
+                        <button id="btn-loading" style="display: none" class="btn btn-primary" type="button" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Cadastrando Aula
+                        </button>
                     </div>
                 </div>
             </div>
@@ -141,7 +145,8 @@
 
         $('#btn-post-lesson').click(function (e) {
             e.preventDefault();
-
+            $(this).hide();
+            $('#btn-loading').show();
             const data_save = $('#form-lesson').serializeArray();
             const provider = $("#select-provider option:selected").val();
 
@@ -167,6 +172,8 @@
                     }, 3000);
                 },
                 error: function (callback) {
+                    $('#btn-post-lesson').show();
+                    $('#btn-loading').hide();
                     if (callback.responseJSON.errors) {
                         $.each(callback.responseJSON.errors, function (key, value) {
                             toastr.error(value);
@@ -178,4 +185,33 @@
             });
         })
     </script>
+
+    <div class="card mt-3 shadow  p-3">
+        <table id="table" class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Título</th>
+                <th scope="col">Provedor do Vídeo</th>
+                <th scope="col">Link Vídeo</th>
+                <th scope="col">Data Criação</th>
+                <th scope="col">Editar</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($module->lessons as $lesson)
+            <tr>
+                <th scope="row">{{$lesson->title}}</th>
+                <td>{{$lesson->provider_video == \App\Enums\LessonEnum::PROVIDER_YOUTUBE ? 'Youtube' : 'Vimeo'}}</td>
+                <td><a target="_blank" href="{{$lesson->video_link}}">{{$lesson->video_link}}</a></td>
+                <td>{{$lesson->created_at}}</td>
+                <td><a  href="{{route('get-lesson', $lesson->id)}}">Editar</a></td>
+            </tr>
+            @endforeach
+
+            </tbody>
+        </table>
+        <script>
+            $('#table').DataTable();
+        </script>
+    </div>
 @endsection
