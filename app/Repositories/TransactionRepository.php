@@ -62,8 +62,7 @@ class TransactionRepository
 
             $payee->notify(new TransactionSuccessNotification($payload, Auth::user()->name));
 
-            $notification = new NotificationController();
-            $notification->new($payee->id, "Você recebeu " . $payload["amount"] . " Lunapoints");
+            (new NotificationController())->new($payee->id, "Você recebeu " . $payload["amount"] . " Lunapoints");
 
             return $transaction;
         });
@@ -74,7 +73,7 @@ class TransactionRepository
         return User::where('username', $data["payee_username"])->first();
     }
 
-    private function checkUserWalletBalance(Wallet $wallet, $amount)
+    private function checkUserWalletBalance(Wallet $wallet, $amount): bool
     {
         return $wallet->credits >= $amount;
     }

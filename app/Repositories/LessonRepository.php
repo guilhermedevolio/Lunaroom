@@ -27,7 +27,7 @@ class LessonRepository
             ->update($payload);
     }
 
-    public function deleteLessson($lessonId)
+    public function deleteLesson($lessonId)
     {
         return $this->model->findOrFail($lessonId)->delete();
     }

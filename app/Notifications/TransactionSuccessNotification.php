@@ -49,7 +49,7 @@ class TransactionSuccessNotification extends Notification
     {
         return (new MailMessage)
             ->greeting('Olá!')
-            ->subject('Lunaroom - Você recebeu uma transação de Lunapoints')
+            ->subject('Lunaroom - Você recebeu uma transação de Lunapoints' )
             ->line("Boas Notícias, o usuário $this->username te enviou $this->value Lunapoints!")
             ->line("Achou suspeito? A transação está detalhada na página minha carteira, tenha um dia feliz =)")
             ->line('Obrigado por ser um Lunaroom');

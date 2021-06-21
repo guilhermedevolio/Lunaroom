@@ -42,7 +42,7 @@ class VoucherController extends Controller
         return $this->success(['voucher' => $voucher["voucher"] ]);
     }
 
-    public function redeemVoucher(RedeemVoucherRequest $request)
+    public function redeemVoucher(RedeemVoucherRequest $request): JsonResponse
     {
 
         $payload = $request->validated();

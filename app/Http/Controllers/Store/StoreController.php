@@ -3,15 +3,21 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
-use App\Models\Course;
-use App\Repositories\CourseRepository;
-use Illuminate\Http\Request;
+use App\Repositories\StoreRepository;
+use Illuminate\View\View;
 
 class StoreController extends Controller
 {
-    public function getCourses()
+    protected StoreRepository $repository;
+
+    public function __construct(StoreRepository $repository)
     {
-        $courses = Course::paginate(10);
+        $this->repository = $repository;
+    }
+
+    public function viewStore(): View
+    {
+        $courses = $this->repository->getStoreProducts();
         return view('campus.store.store', compact('courses'));
     }
 }

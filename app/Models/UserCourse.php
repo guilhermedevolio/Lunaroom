@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static where(int[] $array, int[] $array1)
+ */
 class UserCourse extends Model
 {
     use HasFactory;
@@ -12,6 +15,4 @@ class UserCourse extends Model
     protected $table = 'users_courses';
 
     protected $fillable = ['id', 'user_id', 'course_id'];
-
-
 }

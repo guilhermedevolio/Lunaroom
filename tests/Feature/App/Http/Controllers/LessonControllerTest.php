@@ -130,4 +130,18 @@ class LessonControllerTest extends TestCase
         ]);
     }
 
+    public function test_client_should_see_your_courses()
+    {
+        // Prepare
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $user->courses()->sync(['course_id' => $this->course->id]);
+
+        // Act
+        $response = $this->get(route('my-courses'));
+
+        // Assert
+        $response->assertViewHas('courses');
+    }
+
 }

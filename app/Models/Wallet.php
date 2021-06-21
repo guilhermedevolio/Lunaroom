@@ -21,14 +21,14 @@ class Wallet extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function deposit($value): bool
+    public function deposit(int $value): bool
     {
         return $this->update([
             'credits' => $this->attributes['credits'] + $value
         ]);
     }
 
-    public function withDraw($value): bool
+    public function withDraw(int $value): bool
     {
         return $this->update([
             'credits' => $this->attributes['credits'] - $value

@@ -3,6 +3,7 @@
 @section('content')
     <div class="container-xl mt-5">
         <h2 class="text-center" style="font-size: 40px">Resgatar Voucher</h2>
+        <p class="text-center">Recebeu algum voucher de presente ? Resgate-o aqui</p>
         <div class="card shadow mt-3">
             <form action="" id="form" method="POST">
                 <div class="mb-3 p-3">

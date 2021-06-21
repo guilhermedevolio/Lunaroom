@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Course;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddCourseToUserRequest;
+use App\Http\Requests\DeleteUserCourseRequest;
 use App\Http\Requests\PostCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use App\Models\Course;
@@ -10,11 +12,13 @@ use App\Models\User;
 use App\Models\UserCourse;
 use App\Repositories\CourseRepository;
 use App\Traits\ResponseTrait;
+use Auth;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
+use Prophecy\Exception\Exception;
 
 class CourseController extends Controller
 {
@@ -38,7 +42,7 @@ class CourseController extends Controller
         return view('admin.course.courses', compact('courses'));
     }
 
-    public function postCourse(PostCourseRequest $request): Redirector|Application|RedirectResponse
+    public function postCourse(PostCourseRequest $request): RedirectResponse
     {
         $payload = $request->validated();
 
@@ -54,13 +58,13 @@ class CourseController extends Controller
     }
 
 
-    public function putCourse(UpdateCourseRequest $request, int $courseId): JsonResponse
+    public function putCourse(UpdateCourseRequest $request, int $courseId)
     {
         $payload = $request->validated();
 
         $this->repository->putCourse($payload, $courseId);
 
-        return $this->success();
+        return redirect()->back();
     }
 
 
@@ -71,19 +75,21 @@ class CourseController extends Controller
         return redirect(route('courses'));
     }
 
-    public function getMyCourses()
+    public function getMyCourses(): View
     {
-        $courses = $this->getCoursesByUserId(\Auth::user()->id);
+        $courses = $this->getCoursesByUserId(Auth::user()->id);
         return view('campus.courses.my-courses', compact('courses'));
     }
 
-    public function getCourseWebsite($courseId)
+    public function getCourseWebsite($courseId): View
     {
         $course = $this->repository->getCourse($courseId);
 
-        if(!$this->checkUserHaveCourse($courseId, \Auth::user()->id)){
-            return view('campus.courses.buy',compact('course'));
+        if (!$this->checkUserHaveCourse($courseId, Auth::user()->id)) {
+            return view('campus.courses.buy', compact('course'));
         }
+
+        return view('campus.courses.course', compact('course'));
     }
 
     public function checkUserHaveCourse($courseId, $userId)
@@ -93,8 +99,31 @@ class CourseController extends Controller
             ->first();
     }
 
-    public function getCoursesByUserId($id)
+    public function getCoursesByUserId(int $userId)
     {
-        return User::where('id', $id)->with('courses')->first();
+        return User::where('id', $userId)->with('courses')->first();
+    }
+
+    public function addCourseUser(AddCourseToUserRequest $request): JsonResponse
+    {
+        $payload = $request->validated();
+
+        try {
+            $this->repository->addCourseToUser($payload);
+            return $this->success();
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+
+    }
+
+    public function removeCourseUser(DeleteUserCourseRequest $request): JsonResponse
+    {
+        $payload = $request->validated();
+
+        $this->repository->removeCourseUser($payload);
+
+        return $this->success();
+
     }
 }

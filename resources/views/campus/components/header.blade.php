@@ -26,7 +26,7 @@
                         </div>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                        <a href="#" class="dropdown-item">Perfil</a>
+                        <a href="{{route('config-user-profile')}}" class="dropdown-item">Perfil</a>
                         <a href="{{route('get-notifications')}}" class="dropdown-item">Notificações</a>
                         <a href="{{route('logout')}}" class="dropdown-item">Logout</a>
                         @if(Auth::user()->admin)
@@ -143,7 +143,7 @@
                                         <a class="dropdown-item" href="#">
                                             Comprar Créditos
                                         </a>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{{route('redeem-voucher')}}">
                                             Resgatar Vouncher
                                         </a>
                                     </div>

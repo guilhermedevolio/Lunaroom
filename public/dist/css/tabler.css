@@ -5276,7 +5276,8 @@ textarea.form-control-lg {
   color: #232e3c !important; }
 
 .text-muted {
-  color: #656d77 !important; }
+  color: white !important;
+}
 
 .text-black-50 {
   color: rgba(0, 0, 0, 0.5) !important; }

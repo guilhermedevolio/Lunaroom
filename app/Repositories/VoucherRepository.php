@@ -34,13 +34,13 @@ class VoucherRepository
     {
         $voucher = $this->checkVoucherIsUsed($payload["voucher"]);
 
-        if(!$voucher){
-            throw new VoucherDeniedException('O Voucher já foi resgatado', 422);
+
+        if (!$voucher) {
+            throw new VoucherDeniedException('O Voucher Informado já foi resgatado', 422);
         }
 
-        return DB::transaction(function () use ($voucher){
-
-            Auth::user()->wallet->deposit($voucher->amount);
+        return DB::transaction(function () use ($voucher) {
+            Auth::user()->wallet->deposit($voucher['amount']);
             $voucher->update(['used' => Auth::user()->id]);
 
             return $voucher["amount"];
@@ -52,7 +52,7 @@ class VoucherRepository
     {
         $voucher = Voucher::where('voucher', $voucher)->first();
 
-        if($voucher["used"]){
+        if ($voucher["used"]) {
             return false;
         }
 

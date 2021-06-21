@@ -7,7 +7,8 @@
     <title>Lunaroom</title>
     <!-- CSS files -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="{{asset('dist/css/tabler.min.css')}}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{asset('dist/custom.css')}}">
+    <link href="{{asset('dist/css/tabler.css')}}" rel="stylesheet"/>
     <link href="{{asset('dist/css/tabler-flags.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('dist/css/tabler-payments.min.css')}}" rel="stylesheet"/>
     <link href="{{asset('dist/css/tabler-vendors.min.css')}}" rel="stylesheet"/>
@@ -16,6 +17,7 @@
     <script src="{{asset('src/toastr/toastr.min.js')}}"></script>
     <link rel="stylesheet" href="{{asset('plugins/datatables/jquery.dataTables.min.css')}}">
     <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
+
 </head>
 <style>
     table.dataTable.no-footer{

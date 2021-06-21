@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateLessonRequest;
 use App\Repositories\LessonRepository;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class LessonController extends Controller
 {
@@ -29,7 +31,7 @@ class LessonController extends Controller
         return $this->success();
     }
 
-    public function putLesson(UpdateLessonRequest $request, $lessonId): JsonResponse
+    public function putLesson(UpdateLessonRequest $request, int $lessonId): JsonResponse
     {
         $payload = $request->validated();
 
@@ -38,14 +40,14 @@ class LessonController extends Controller
         return $this->success();
     }
 
-    public function deleteLesson($lessonId)
+    public function deleteLesson(int $lessonId): RedirectResponse
     {
-        $this->repository->deleteLessson($lessonId);
+        $this->repository->deleteLesson($lessonId);
 
         return redirect(route('courses'));
     }
 
-    public function getLesson($lessonId)
+    public function getLesson(int $lessonId): View
     {
         $lesson = $this->repository->getLesson($lessonId);
         return view('admin.course.lesson.edit', compact('lesson'));

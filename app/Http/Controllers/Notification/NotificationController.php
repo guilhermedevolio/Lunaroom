@@ -22,7 +22,7 @@ class NotificationController extends Controller
         $this->repository->create($user_id,$message);
     }
 
-    public function getNotificationsByUserId(): View
+    public function viewNotifications(): View
     {
         $notifications = $this->repository->getNotificationsByUserId(\Auth::user()->id);
         return view('campus.notification.notifications', compact('notifications'));

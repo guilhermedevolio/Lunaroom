@@ -3,6 +3,7 @@
 use App\Http\Controllers\Notification\NotificationController;
 use App\Http\Controllers\Store\StoreController;
 use App\Http\Controllers\Transactions\TransactionController;
+use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Voucher\VoucherController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
@@ -43,18 +44,29 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 //User Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/campus', [CampusController::class, 'viewCampus'])->name('campus');
+
     Route::prefix('transaction')->group(function () {
         Route::post('new', [TransactionController::class, 'postTransaction'])->name('post-transaction');
         Route::get('my-transactions', [TransactionController::class, 'getUserLoggedTransactions'])->name('get-transactions');
     });
+
     Route::prefix('course')->group(function () {
         Route::get('/my', [CourseController::class, 'getMyCourses'])->name('my-courses');
         Route::get('/{courseId}', [CourseController::class, 'getCourseWebsite'])->name('get-course');
     });
-    Route::get('/store', [StoreController::class, 'getCourses'])->name('store');
-    Route::get('notifications', [NotificationController::class, 'getNotificationsByUserId'])->name('get-notifications');
+
+    Route::get('/store', [StoreController::class, 'viewStore'])->name('store');
+    Route::get('/notifications', [NotificationController::class, 'viewNotifications'])->name('get-notifications');
     Route::get('/redeem-voucher', [VoucherController::class, 'viewRedeemVoucher'])->name('get-redeem-voucher');
     Route::post('/redeem-voucher', [VoucherController::class, 'redeemVoucher'])->name('redeem-voucher');
+
+    Route::prefix('me')->group(function() {
+        Route::get('account', [ProfileController::class, 'viewUserProfile'])->name('config-user-profile');
+        Route::get('public-profile', [ProfileController::class, 'viewConfigPublicProfile'])->name('config-public-profile');
+        Route::post('create-profile', [ProfileController::class, 'createPublicProfile'])->name('create-public-profile');
+        Route::put('update-public-profile', [ProfileController::class, 'updatePublicProfile'])->name('update-public-profile');
+    });
+
 });
 
 //Admin Routes
@@ -99,4 +111,7 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
         Route::get('/', [VoucherController::class, 'viewCreateVoucher'])->name('create-voucher');
         Route::post('/', [VoucherController::class, 'postVoucher'])->name('post-voucher');
     });
+
+    Route::post('/addUserCourse', [CourseController::class, 'addCourseUser'])->name('add-course-to-user');
+    Route::delete('/removeUserCourse', [CourseController::class, 'removeCourseUser'])->name('remove-course-to-user');
 });

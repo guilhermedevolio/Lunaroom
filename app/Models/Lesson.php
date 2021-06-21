@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method create(array $payload)
+ * @method findOrFail($lessonId)
  */
 class Lesson extends Model
 {

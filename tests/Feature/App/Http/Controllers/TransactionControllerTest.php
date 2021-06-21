@@ -101,7 +101,7 @@ class TransactionControllerTest extends TestCase
         // Prepare
         $user = User::factory()->create();
         $this->actingAs($user);
-
+        
         // Act
         $response = $this->get(route('get-transactions'));
 

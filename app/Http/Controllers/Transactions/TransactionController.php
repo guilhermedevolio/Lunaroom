@@ -30,11 +30,10 @@ class TransactionController extends Controller
 
         try {
             $transaction = $this->repository->handleTransaction($payload);
+            return response()->json($transaction);
         } catch (NoCreditsException | TransactionDeniedException $ex) {
             return response()->json(['msg' => $ex->getMessage()], $ex->getCode());
         }
-
-        return response()->json($transaction);
     }
 
     public function getUserLoggedTransactions(): View

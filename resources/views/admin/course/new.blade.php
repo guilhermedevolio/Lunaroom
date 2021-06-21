@@ -4,6 +4,16 @@
     <h2 class="mt-3">Cadastrar Novo Curso</h2>
     <form action="{{route('post-course')}}" id="form" method="POST" enctype="multipart/form-data">
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         {{csrf_field()}}
         <div class="card p-3">
             <div class="mb-3">

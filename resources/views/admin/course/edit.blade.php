@@ -6,6 +6,15 @@
           enctype="multipart/form-data">
         {{method_field('PUT')}}
         {{csrf_field()}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="card p-3">
             <img src="{{asset("storage/courses/$course->image")}}" class="img-fluid w-25 rounded-1 pb-3" alt="">
             <div class="mb-3">
@@ -101,7 +110,6 @@
                         setTimeout(() => {
                             location.reload();
                         }, 3000);
-
                     },
                     error: (callback) => {
                         if(callback.responseJSON.errors){

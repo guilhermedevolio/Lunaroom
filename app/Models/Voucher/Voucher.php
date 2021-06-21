@@ -6,6 +6,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static where(string $string, string $voucher)
+ */
 class Voucher extends Model
 {
     use HasFactory;
