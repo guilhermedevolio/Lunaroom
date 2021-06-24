@@ -101,7 +101,7 @@ class VoucherControllerTest extends TestCase
         $response = $this->post(route('redeem-voucher'), ['voucher' => $voucher->voucher]);
 
         // Assert
-        $response->assertJson(['msg' => 'O Voucher já foi resgatado']);
+        $response->assertJson(['msg' => 'O Voucher Informado já foi resgatado']);
     }
 
 }

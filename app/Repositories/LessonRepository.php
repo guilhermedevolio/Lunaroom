@@ -37,5 +37,12 @@ class LessonRepository
         return $this->model->findOrFail($lessonId);
     }
 
+    public function getLessonWebsite($lessonId)
+    {
+       $lesson =  $this->model->findOrFail($lessonId);
+
+       return $lesson;
+
+    }
 
 }

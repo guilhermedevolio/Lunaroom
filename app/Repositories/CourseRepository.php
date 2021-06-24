@@ -25,14 +25,6 @@ class CourseRepository
         $this->model = $model;
     }
 
-    public function postCourse(array $payload)
-    {
-        $fileName = $this->upload('courses', $payload["image"]);
-        $payload["image"] = $fileName;
-
-        return $this->model->create($payload);
-    }
-
     public function getCourses(): Collection|array
     {
         return $this->model->all();
@@ -43,7 +35,16 @@ class CourseRepository
         return $this->model->with(['modules.lessons'])->findOrFail($id);
     }
 
-    public function deleteCourse($courseId): JsonResponse
+
+    public function postCourse(array $payload)
+    {
+        $fileName = $this->upload('courses', $payload["image"]);
+        $payload["image"] = $fileName;
+
+        return $this->model->create($payload);
+    }
+
+    public function deleteCourse($courseId): bool
     {
         $course = $this->model->findOrFail($courseId);
 
@@ -62,7 +63,7 @@ class CourseRepository
             // Delete Old File
             $this->delete('courses/', $course->image);
 
-            // Update New File
+            // Upload New File
             $fileName = $this->upload('courses/', $payload["image"]);
 
             $payload["image"] = $fileName;
@@ -71,12 +72,11 @@ class CourseRepository
         return $course->update($payload);
     }
 
-    /**
-     * @throws Exception
-     */
+
     public function addCourseToUser(array $payload)
     {
         $user = User::findOrFail($payload["user_id"]);
+
         if ($this->checkUserHaveCourse($payload["course_id"], $payload["user_id"])) {
             throw new Exception('User already owns the course', '302');
         }
@@ -89,11 +89,11 @@ class CourseRepository
         return UserCourse::where(['user_id' => $userId])->where(['course_id' => $courseId])->first();
     }
 
-    public function removeCourseUser(array $payload)
+    public function deleteCourseUser(array $payload): JsonResponse
     {
         return UserCourse::where('user_id', $payload["user_id"])
             ->where('course_id', $payload["course_id"])
-            ->first()
+            ->findOrFail()
             ->delete();
     }
 

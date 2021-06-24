@@ -7,7 +7,6 @@ use App\Http\Requests\AddCourseToUserRequest;
 use App\Http\Requests\DeleteUserCourseRequest;
 use App\Http\Requests\PostCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
-use App\Models\Course;
 use App\Models\User;
 use App\Models\UserCourse;
 use App\Repositories\CourseRepository;
@@ -18,7 +17,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
-use Prophecy\Exception\Exception;
 
 class CourseController extends Controller
 {
@@ -58,7 +56,7 @@ class CourseController extends Controller
     }
 
 
-    public function putCourse(UpdateCourseRequest $request, int $courseId)
+    public function putCourse(UpdateCourseRequest $request, int $courseId): RedirectResponse
     {
         $payload = $request->validated();
 
@@ -68,7 +66,7 @@ class CourseController extends Controller
     }
 
 
-    public function deleteCourse(int $courseId): Redirector|Application|RedirectResponse
+    public function deleteCourse(int $courseId)
     {
         $this->repository->deleteCourse($courseId);
 
@@ -121,9 +119,8 @@ class CourseController extends Controller
     {
         $payload = $request->validated();
 
-        $this->repository->removeCourseUser($payload);
+        $this->repository->deleteCourseUser($payload);
 
         return $this->success();
-
     }
 }

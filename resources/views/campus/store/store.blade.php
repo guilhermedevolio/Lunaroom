@@ -2,13 +2,18 @@
 
 
 @section('content')
+    <style>
+        .mt-2 {
+            margin-top: 0 !important;
+        }
+    </style>
     <div class="container-xl">
         <div class="container-xl">
             <div class="row mt-3">
                 <h2 class="" style="font-size: 30px;">Loja</h2>
                 <p>Invista no seu conhecimento.</p>
                     @foreach($courses as $course)
-                        <div class="card" style="width: 18rem; margin-right: 20px">
+                        <div class="card shadow" style="width: 18rem; margin-right: 20px; padding: 0; margin: 0 !important">
                         <img id="image" src="{{asset('storage/courses/'.$course->image)}}" class="card-img-top mt-2" alt="...">
                         <div class="card-body">
                             <h5 class="card-title text-center">{{$course->title}}</h5>

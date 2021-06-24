@@ -55,6 +55,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{courseId}', [CourseController::class, 'getCourseWebsite'])->name('get-course');
     });
 
+    Route::get('lesson/{lessonId}', [LessonController::class, 'getLessonById'])->name('get-lesson-website');
+
     Route::get('/store', [StoreController::class, 'viewStore'])->name('store');
     Route::get('/notifications', [NotificationController::class, 'viewNotifications'])->name('get-notifications');
     Route::get('/redeem-voucher', [VoucherController::class, 'viewRedeemVoucher'])->name('get-redeem-voucher');

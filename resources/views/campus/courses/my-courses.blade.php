@@ -10,13 +10,13 @@
                     <img src="{{asset('storage/courses/'.$course->image)}}" class="card-img-top mt-2" alt="...">
                     <div class="card-body">
                         <h5 class="card-title text-center">{{$course->title}}</h5>
-                        <a href="#" class="btn btn-primary w-100">Acessar Curso</a>
+                        <a href="{{route('get-course', $course->id)}}" class="btn btn-primary w-100">Acessar Curso</a>
                     </div>
                 </div>
             @endforeach
             @empty($course)
                 <div class="alert alert-info">Parece que você não possui nenhum curso, aproveite para comprar um agora mesmo na
-                   nossa <a href="">Loja</a></div>
+                   nossa <a href="{{route('store')}}">Loja</a> <br> Quando você se inscrever em um curso , ele vai aparecer aqui</div>
             @endempty
         </div>
     </div>

@@ -7,6 +7,7 @@ use App\Http\Requests\PostLessonRequest;
 use App\Http\Requests\UpdateLessonRequest;
 use App\Repositories\LessonRepository;
 use App\Traits\ResponseTrait;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -51,5 +52,16 @@ class LessonController extends Controller
     {
         $lesson = $this->repository->getLesson($lessonId);
         return view('admin.course.lesson.edit', compact('lesson'));
+    }
+
+    public function getLessonByid(int $lessonId): JsonResponse
+    {
+        $lesson = $this->repository->getLessonWebsite($lessonId);
+
+        if($lesson["init_date"] > Carbon::now()){
+            $date = $lesson["init_date"];
+            return response()->json(['message' => "Esta aula estará disponivel na data $date"], 422);
+        }
+        return response()->json($lesson);
     }
 }

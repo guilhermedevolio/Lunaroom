@@ -8,6 +8,7 @@ use App\Repositories\ProfileRepository;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
@@ -20,12 +21,12 @@ class ProfileController extends Controller
         $this->repository = $repository;
     }
 
-    public function viewUserProfile()
+    public function viewUserProfile(): View
     {
         return view('campus.profile.index');
     }
 
-    public function viewConfigPublicProfile()
+    public function viewConfigPublicProfile(): View
     {
         return view('campus.profile.config-public-profile');
     }
@@ -43,6 +44,7 @@ class ProfileController extends Controller
 
         $this->repository->updatePublicProfile($payload);
 
-        return redirect(route('config-public-profile'))->with('message', 'Perfil Atualizado com sucesso');
+        return redirect(route('config-public-profile'))
+            ->with('message', 'Perfil Atualizado com sucesso');
     }
 }

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 /**
  * @method create(array $payload)
  * @method static where(string $string, mixed $user_id)
+ * @method static findOrFail(mixed $user_id)
  */
 class User extends Authenticatable
 {

@@ -38,10 +38,31 @@
     }
 </style>
 <div class="container-xl ">
-    <div class="box-profile mt-3 d-flex w-100">
+    <div class="box-profile mt-3 d-flex w-100 ">
         <div class="left  d-flex justify-content-center align-items-center flex-column">
+            <style>
+                img{
+                    width: 400px !important;
+                    object-fit: cover;
+                }
+                @media screen and (max-width: 768px){
+                    .box-profile {
+                        flex-direction: column;
+                    }
+                    .left{
+                        width: 100%;
+                    }
+                    .right{
+                        width: 100%;
+                    }
+                }
+            </style>
             <div class="user-info p-2">
-                <img class="rounded-3 profile-image" src="/storage/profiles_images/{{Auth::user()->profile->image}}"  alt=""></a>
+                @if(isset(Auth::user()->profile->image))
+                    <img class="rounded-3 profile-image" src="/storage/profiles_images/{{Auth::user()->profile->image}}"  alt=""></a>
+                @else
+                    <img class="rounded-3 profile-image" src="https://via.placeholder.com/150 "  alt=""></a>
+                @endif
                 <h2 class="text-center mt-2">Olá {{Auth::user()->name}}</h2>
             </div>
             <div class="menu d-flex justify-content-start flex-column">

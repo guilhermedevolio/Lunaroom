@@ -43,4 +43,19 @@ class StoreControllerTest extends TestCase
         $response->assertViewIs('campus.courses.buy');
     }
 
+    public function test_admin_can_have_course()
+    {
+        // Prepare
+        $user = User::factory()->create();
+        $course = Course::factory()->create();
+        $user->courses()->attach(['course_id' => $course->id]);
+        $this->actingAs($user);
+
+        // Act
+        $response = $this->get(route('get-course', $course->id));
+
+        // Assert
+        $response->assertViewIs('campus.courses.course');
+    }
+
 }
