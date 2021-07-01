@@ -11,4 +11,5 @@ class AdminDashboardController extends Controller
     {
         return view('admin.index');
     }
+
 }

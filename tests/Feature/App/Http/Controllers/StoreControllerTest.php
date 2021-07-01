@@ -58,4 +58,5 @@ class StoreControllerTest extends TestCase
         $response->assertViewIs('campus.courses.course');
     }
 
+
 }

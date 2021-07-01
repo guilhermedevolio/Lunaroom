@@ -7,12 +7,14 @@ namespace App\Repositories;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\UserCourse;
+use App\Notifications\AdminAddCourseToUser;
 use App\Traits\UploaderFileTrait;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class CourseRepository
 {
@@ -81,7 +83,12 @@ class CourseRepository
             throw new Exception('User already owns the course', '302');
         }
 
-        return $user->courses()->attach(['course_id' => $payload["course_id"]]);
+        return DB::transaction(function() use ($payload,$user) {
+            $user->courses()->attach(['course_id' => $payload["course_id"]]);
+
+            $user->notify(new AdminAddCourseToUser($user, $payload["course_id"]));
+        });
+
     }
 
     public function checkUserHaveCourse(int $courseId, int $userId)

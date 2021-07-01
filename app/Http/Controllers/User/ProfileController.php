@@ -12,7 +12,7 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    protected $repository;
+    protected ProfileRepository $repository;
 
     use ResponseTrait;
 
@@ -47,4 +47,6 @@ class ProfileController extends Controller
         return redirect(route('config-public-profile'))
             ->with('message', 'Perfil Atualizado com sucesso');
     }
+
+
 }

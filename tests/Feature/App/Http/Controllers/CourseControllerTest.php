@@ -5,7 +5,9 @@ namespace Tests\Feature\App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\User;
+use App\Notifications\AdminAddCourseToUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
@@ -185,6 +187,8 @@ class CourseControllerTest extends TestCase
     public function test_admin_can_add_course_to_user_when_user_not_have_course()
     {
         // Prepare
+        Notification::fake();
+
         $user = User::factory()->create();
         $this->actingAs($this->admin);
 
@@ -198,6 +202,8 @@ class CourseControllerTest extends TestCase
 
         // Assert
         $response->assertStatus(200);
+        Notification::assertSentTo([$user], AdminAddCourseToUser::class);
+
         $this->assertDatabaseHas('users_courses', [
             'user_id' => $user->id,
             'course_id' => $this->course->id
