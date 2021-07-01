@@ -83,7 +83,7 @@ class ProfileControllerTest extends TestCase
 
         Storage::shouldReceive('delete')
             ->once()
-            ->withAnyArgs();
+            ->with('profiles_images/' . $user->profile->image);
 
         Storage::shouldReceive('disk')
             ->once()

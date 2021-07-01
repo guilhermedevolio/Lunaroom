@@ -100,11 +100,10 @@
             </form>
         </div>
         <script>
-            $('#btn-update-public-profile').click(function() {
-                $(this).attr('disabled', true);
-            })
+            // $('#btn-update-public-profile').click(function() {
+            //     $(this).attr('disabled', true);
+            // })
             {{--$(function () {--}}
-
             {{--    var form;--}}
             {{--    $('#file').change(function (event) {--}}
             {{--        form = new FormData();--}}
