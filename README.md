@@ -4,7 +4,7 @@
 #### Lunaroomoom is a software to manage courses.
 
 ### What is the idea of Lunaroom ?
-#### Lunaroom's idea is to have an MVP of one ead
+#### Lunaroom's idea is to have an MVP of one LMS
 
 
 ### Technologies :
