@@ -5,15 +5,17 @@ namespace App\Services;
 
 
 
+use App\Contracts\PaymentContract;
 use App\Enums\Services\MercadoPagoEnum;
 use App\Models\User;
 use App\Transformers\MercadoPagoTransformer;
+use App\Transformers\PaymentTransformer;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Auth;
 
-class MercadoPagoService
+class MercadoPagoService implements PaymentContract
 {
     private Client $client;
     private string $access_token;
@@ -32,23 +34,30 @@ class MercadoPagoService
         ]);
     }
 
-    public function generatePixPaymentTest() {
-
-        $payPayload = [
-            'total' => 10,
-            'product' =>  "300 Lunapoints",
-            'payment_method' => MercadoPagoEnum::METHOD_PIX,
-            'payer' => Auth::user()
-        ];
-
-        $payload = (new MercadoPagoTransformer())->getMercadoPagoSchema($payPayload);
+    public function makePayment(array $payload)
+    {
+        $transactPayload = (new MercadoPagoTransformer())->getMercadoPagoSchema($payload);
 
         try {
-            $request = $this->client->request('POST', $this->url, ['body' => json_encode($payload)]);
-            return json_decode($request->getBody());
+            $request = $this->client->request('POST', $this->url, ['body' => json_encode($transactPayload)]);
+            return json_decode($request->getBody(), true);
         } catch (ClientException $ex) {
             return json_decode($ex->getResponse()->getBody(), true);
         }
+    }
 
+    public function handleResponse($payment_method, $response)
+    {
+        $response = (array) $response;
+
+        if(isset($response['status']) && is_int($response['status']) && $response['status'] != 200) {
+            return ['error' => true, 'message' => $response['message']];
+        }
+
+        $response = match ($payment_method) {
+            'pix' => (new MercadoPagoTransformer())->getPixOutput($response)
+        };
+
+        return $response;
     }
 }

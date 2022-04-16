@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\StoreRepository;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 class StoreController extends Controller
@@ -24,9 +25,5 @@ class StoreController extends Controller
     public function viewBuyCredits()
     {
         return view('campus.store.buy_credits');
-    }
-
-    public function addItemToCart() {
-
     }
 }

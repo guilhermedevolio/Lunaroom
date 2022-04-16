@@ -74,9 +74,14 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'users_courses', 'user_id', 'course_id');
     }
 
-    public function profile()
+    public function profile(): HasOne
     {
         return $this->hasOne(Profile::class);
+    }
+
+    public function sales(): HasMany
+    {
+        return $this->hasMany(Sale::class);
     }
 
 

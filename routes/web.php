@@ -78,7 +78,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('pay')->group(function() {
         Route::get('checkout', [PaymentController::class, 'viewCheckout'])->name('view-checkout');
+        Route::post('/', [PaymentController::class, 'processPayment'])->name('post-execute-transaction');
     });
+
 });
 
 //Admin Routes
@@ -123,6 +125,7 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
         Route::get('/', [VoucherController::class, 'viewCreateVoucher'])->name('create-voucher');
         Route::post('/', [VoucherController::class, 'postVoucher'])->name('post-voucher');
     });
+
 
     Route::post('/addUserCourse', [CourseController::class, 'addCourseUser'])->name('add-course-to-user');
     Route::delete('/removeUserCourse', [CourseController::class, 'removeCourseUser'])->name('remove-course-to-user');

@@ -80,6 +80,20 @@
             if(Payment.method == undefined || "") {
                 return alert('Selecione uma forma de pagamento antes de continuar');
             }
+
+            $.ajax({
+                url: "{{route('post-execute-transaction')}}",
+                method: 'POST',
+                data: {
+                    payment_method: Payment.method
+                },
+                success: (callback) => {
+                   console.log(callback);
+                },
+                error: (callback) => {
+                    console.log(callback);
+                }
+            });
         }
 
         function resetPayment() {
