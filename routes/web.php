@@ -40,6 +40,8 @@ Route::prefix('auth')->middleware(['only_visitant'])->group(function () {
     Route::post('register', [AuthController::class, 'postUser'])->name('post.register');
 });
 
+Route::get('/test', [PaymentController::class, 'teste']);
+
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 //User Routes
