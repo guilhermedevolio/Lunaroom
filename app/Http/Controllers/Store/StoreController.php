@@ -25,4 +25,8 @@ class StoreController extends Controller
     {
         return view('campus.store.buy_credits');
     }
+
+    public function addItemToCart() {
+
+    }
 }

@@ -5,9 +5,13 @@ namespace App\Services;
 
 
 
+use App\Enums\Services\MercadoPagoEnum;
+use App\Models\User;
+use App\Transformers\MercadoPagoTransformer;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Auth;
 
 class MercadoPagoService
 {
@@ -29,29 +33,15 @@ class MercadoPagoService
     }
 
     public function generatePixPaymentTest() {
-        $payload = [
-            "transaction_amount" => (float) 10,
-            'description' => "300 Lunapoints",
-            'payment_method_id' => 'pix',
-            "external_reference" => "1234",
-            'payer' => [
-                'email' => "elainenogaroto@gmail.com",
-                'first_name' => "Elaine",
-                'last_name' => "Devólio",
-                'identification' => [
-                    'type' => 'CPF',
-                    "number" => "21094091855"
-                ],
-                'address' => [
-                    'zip_code' => "15505058",
-                    'street_name' => "Rua Copacabana",
-                    'street_number' => "3611",
-                    'neighborhood' => "Estela Parque",
-                    'city' => "Votuporanga",
-                    'federal_unit' => "SP"
-                ]
-            ]
+
+        $payPayload = [
+            'total' => 10,
+            'product' =>  "300 Lunapoints",
+            'payment_method' => MercadoPagoEnum::METHOD_PIX,
+            'payer' => Auth::user()
         ];
+
+        $payload = (new MercadoPagoTransformer())->getMercadoPagoSchema($payPayload);
 
         try {
             $request = $this->client->request('POST', $this->url, ['body' => json_encode($payload)]);
@@ -59,9 +49,6 @@ class MercadoPagoService
         } catch (ClientException $ex) {
             return json_decode($ex->getResponse()->getBody(), true);
         }
-
-
-
 
     }
 }
