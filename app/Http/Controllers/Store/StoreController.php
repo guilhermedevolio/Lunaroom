@@ -20,4 +20,9 @@ class StoreController extends Controller
         $courses = $this->repository->getStoreProducts();
         return view('campus.store.store', compact('courses'));
     }
+
+    public function viewBuyCredits()
+    {
+        return view('campus.store.buy_credits');
+    }
 }

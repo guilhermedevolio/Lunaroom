@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Notification\NotificationController;
+use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\Store\StoreController;
 use App\Http\Controllers\Transactions\TransactionController;
 use App\Http\Controllers\User\ProfileController;
@@ -69,6 +70,13 @@ Route::middleware(['auth'])->group(function () {
         Route::put('update-public-profile', [ProfileController::class, 'updatePublicProfile'])->name('update-public-profile');
     });
 
+    Route::prefix('credits')->group(function() {
+        Route::get('buy', [StoreController::class, 'viewBuyCredits'])->name('view-buy-credits');
+    });
+
+    Route::prefix('pay')->group(function() {
+        Route::get('checkout', [PaymentController::class, 'viewCheckout'])->name('view-checkout');
+    });
 });
 
 //Admin Routes

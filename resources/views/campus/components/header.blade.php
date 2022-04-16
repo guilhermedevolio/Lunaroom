@@ -140,7 +140,7 @@
                                         <a class="dropdown-item" href="{{route('get-transactions')}}">
                                             Minha Carteira
                                         </a>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href={{route('view-buy-credits')}}>
                                             Comprar Créditos
                                         </a>
                                         <a class="dropdown-item" href="{{route('redeem-voucher')}}">

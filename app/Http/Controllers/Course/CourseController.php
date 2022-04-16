@@ -110,7 +110,7 @@ class CourseController extends Controller
             $this->repository->addCourseToUser($payload);
             return $this->success();
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode());
+            return response()->json(['message' => $e->getMessage()], 200);
         }
 
     }

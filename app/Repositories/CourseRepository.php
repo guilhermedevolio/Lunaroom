@@ -89,6 +89,8 @@ class CourseRepository
             $user->notify(new AdminAddCourseToUser($user, $payload["course_id"]));
         });
 
+        return true;
+
     }
 
     public function checkUserHaveCourse(int $courseId, int $userId)
@@ -100,7 +102,7 @@ class CourseRepository
     {
         return UserCourse::where('user_id', $payload["user_id"])
             ->where('course_id', $payload["course_id"])
-            ->findOrFail()
+            ->first()
             ->delete();
     }
 

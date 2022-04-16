@@ -10,4 +10,8 @@ class StoreRepository
     {
         return Course::whereNotIn('id', \Auth::user()->courses()->pluck('course_id'))->paginate(15);
     }
+
+    public function addItemToCart() {
+
+    }
 }
