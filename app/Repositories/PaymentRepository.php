@@ -3,10 +3,12 @@
 namespace App\Repositories;
 
 use App\Contracts\PaymentContract;
+use App\Enums\SaleEnum;
 use App\Enums\Services\MercadoPagoEnum;
 use App\Exceptions\Payment\InvalidPaymentMethodException;
 use App\Exceptions\Payment\PaymentException;
 use App\Exceptions\PaymentErrorException;
+use App\Models\Sale;
 use App\Services\MercadoPagoService;
 use App\Transformers\MercadoPagoTransformer;
 use App\Transformers\PaymentTransformer;
@@ -30,7 +32,7 @@ class PaymentRepository
      * @throws PaymentException
      * @throws PaymentErrorException
      */
-    public function executeTransaction(array $payload)
+    public function executeTransaction(array $payload): array
     {
         $this->validatePaymentMethod($payload['payment_method']);
         $totalCartCreditsValue = Session::get('cart');
@@ -44,6 +46,7 @@ class PaymentRepository
         $user = Auth::user();
         $sale = $user->sales()->create(['value' => $paymentValue, 'credits' => $totalCartCreditsValue, 'payment_method' => $payload['payment_method']]);
 
+        // TODO: Refactor this (it's garbage at the moment), payload not needed, but this should have a validation by the payment method instead of a global validation
         $payPayload = (new PaymentTransformer())
             ->paymentSchema(
                 $sale->id,
@@ -53,7 +56,7 @@ class PaymentRepository
                 $user
             );
 
-        $service = $this->getServiceByProvider($payload['payment_method']);
+        $service = $this->getServiceByPaymentMethod($payload['payment_method']);
         $payment = $service->makePayment($payPayload);
 
         $sale->logs()->create(['field' => 'response_send', 'value' => json_encode($payment)]);
@@ -74,9 +77,28 @@ class PaymentRepository
         return $responseValidated;
     }
 
-    public function handlePaymentCallback(array $payload)
+    public function handlePaymentCallback(array $payload): array
     {
+        $service = $this->getServiceByProvider($payload['provider']);
+        $response = $service->handleCallback($payload);
 
+        $sale = Sale::find($response['sale_id'])->first();
+        $sale->logs()->create(['field' => 'callback', 'value' => json_encode($response)]);
+
+        switch ($response['sale_status']) {
+            case SaleEnum::APPROVED:
+            {
+                $sale->update(['status' => SaleEnum::APPROVED]);
+                break;
+            }
+            case SaleEnum::PENDENT:
+            {
+                $sale->update(['status' => SaleEnum::PENDENT]);
+                break;
+            }
+        }
+
+        return ['ok' => true];
     }
 
     /**
@@ -91,10 +113,17 @@ class PaymentRepository
         }
     }
 
-    private function getServiceByProvider(string $provider): PaymentContract
+    private function getServiceByPaymentMethod(string $method): PaymentContract
+    {
+        return match ($method) {
+            'pix' => new MercadoPagoService()
+        };
+    }
+
+    private function getServiceByProvider($provider): PaymentContract
     {
         return match ($provider) {
-            'pix' => new MercadoPagoService()
+            'mercadopago' => new MercadoPagoService()
         };
     }
 }

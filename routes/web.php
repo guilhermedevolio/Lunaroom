@@ -41,7 +41,7 @@ Route::prefix('auth')->middleware(['only_visitant'])->group(function () {
 });
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-
+Route::get('test', [\App\Repositories\PaymentRepository::class, 'searchSaleById']);
 Route::prefix('callback')->group(function() {
     Route::post('/payment/{provider}', [PaymentController::class, 'handlePaymentCallback'])->name('payment-callback');
 });

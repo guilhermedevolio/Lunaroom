@@ -39,4 +39,12 @@ class PaymentTransformer
 
         return $payload;
     }
+
+    public function callbackPaymentSchema($payment_status, $payment_id): array
+    {
+        return (array) [
+            'sale_id' => $payment_id,
+            'sale_status' => $payment_status
+        ];
+    }
 }

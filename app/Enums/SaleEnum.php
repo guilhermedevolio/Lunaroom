@@ -6,7 +6,7 @@ namespace App\Enums;
 
 class SaleEnum
 {
-    public const APPROVED = "P";
+    public const APPROVED = "A";
     public const PENDENT = "P";
-    public const CANCELED = "P";
+    public const CANCELED = "C";
 }

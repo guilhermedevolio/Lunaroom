@@ -4,8 +4,8 @@
 namespace App\Services;
 
 
-
 use App\Contracts\PaymentContract;
+use App\Enums\SaleEnum;
 use App\Enums\Services\MercadoPagoEnum;
 use App\Models\User;
 use App\Transformers\MercadoPagoTransformer;
@@ -34,6 +34,18 @@ class MercadoPagoService implements PaymentContract
         ]);
     }
 
+    public function getSaleById(int $id)
+    {
+        $uri = $this->url . "/$id";
+
+        try {
+            $request = $this->client->request('GET', $uri);
+            return json_decode($request->getBody(), true);
+        } catch (ClientException $ex) {
+            return json_decode($ex->getResponse()->getBody(), true);
+        }
+    }
+
     public function makePayment(array $payload)
     {
         $transactPayload = (new MercadoPagoTransformer())->getMercadoPagoSchema($payload);
@@ -46,11 +58,28 @@ class MercadoPagoService implements PaymentContract
         }
     }
 
+    public function handleCallback(array $payload): array
+    {
+        $sale_id = $payload['sale_id'];
+        $sale = $this->getSaleById($sale_id);
+        $status = "P";
+
+        switch ($sale['status']) {
+            case 'pending':
+                $status = SaleEnum::PENDENT;
+                break;
+            case 'approved':
+                $status = SaleEnum::APPROVED;
+        }
+
+        return (new PaymentTransformer())->callbackPaymentSchema($status, $sale_id);
+    }
+
     public function handleResponse($payment_method, $response)
     {
-        $response = (array) $response;
+        $response = (array)$response;
 
-        if(isset($response['status']) && is_int($response['status']) && $response['status'] != 200) {
+        if (isset($response['status']) && is_int($response['status']) && $response['status'] != 200) {
             return ['error' => true, 'message' => $response['message']];
         }
 
