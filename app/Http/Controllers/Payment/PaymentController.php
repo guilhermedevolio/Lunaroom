@@ -28,6 +28,12 @@ class PaymentController extends Controller
         return view('campus.payment.checkout');
     }
 
+    public function viewPayPix(string $payloadbase64)
+    {
+        $payloadbase64 = json_decode(base64_decode($payloadbase64), true);
+        return view('campus.payment.pix', ['payload' => $payloadbase64]);
+    }
+
     public function processPayment(ExecPaymentRequest $request): JsonResponse
     {
         try {
@@ -39,6 +45,8 @@ class PaymentController extends Controller
             return response()->json(['status' => 'error', 'error' => $ex->getMessage()]);
         } catch (PaymentErrorException $ex) {
             return response()->json(['status' => 'error', 'error' => $ex->getMessage()]);
+        } catch (\Exception $ex) {
+            return response()->json(['status' => 'error', 'error' => "Ocorreu um erro ao gerar o link de pagamentox"]);
         }
     }
 }

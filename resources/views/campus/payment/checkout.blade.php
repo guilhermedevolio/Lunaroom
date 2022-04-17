@@ -88,7 +88,9 @@
                     payment_method: Payment.method
                 },
                 success: (callback) => {
-                   console.log(callback);
+                   if(callback.payment.payment_method === "pix") {
+                       return window.location.href = "pix/" + callback.payment.base64payload
+                   }
                 },
                 error: (callback) => {
                     console.log(callback);

@@ -79,6 +79,11 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('pay')->group(function() {
         Route::get('checkout', [PaymentController::class, 'viewCheckout'])->name('view-checkout');
         Route::post('/', [PaymentController::class, 'processPayment'])->name('post-execute-transaction');
+        Route::get('pix/{payloadbase64}', [PaymentController::class, 'viewPayPix'])->name('view-pay-pix');
+    });
+
+    Route::prefix('cart')->group(function(){
+        Route::post('/add', [StoreController::class, 'addToCart'])->name('add-to-cart');
     });
 
 });

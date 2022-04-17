@@ -1,7 +1,6 @@
 @yield('head', View::make('layouts.components.head'))
 
 
-
 <body class="d-flex flex-column">
 <div class="page page-center">
     <div class="container-tight py-4">
@@ -41,7 +40,6 @@
         </form>
     </div>
 </div>
-
 <script>
     $('#btn-login').on('click', function (event) {
         event.preventDefault();

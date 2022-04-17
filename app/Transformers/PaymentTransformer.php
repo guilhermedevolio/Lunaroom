@@ -28,11 +28,15 @@ class PaymentTransformer
 
     public function pixPaymentSchema($payment_method, $status, $qr_code, $qr_code_image): array
     {
-        return (array) [
+        $payload = (array) [
             'payment_method' => $payment_method,
             'status' => $status,
             'qr_code' => $qr_code,
-            'qr_code_image' => $qr_code_image
+            'qr_code_image' => $qr_code_image,
         ];
+
+        $payload['base64payload'] = base64_encode(json_encode($payload));
+
+        return $payload;
     }
 }

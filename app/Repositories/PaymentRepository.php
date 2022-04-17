@@ -27,6 +27,7 @@ class PaymentRepository
     /**
      * @throws InvalidPaymentMethodException
      * @throws PaymentException
+     * @throws PaymentErrorException
      */
     public function executeTransaction(array $payload)
     {
@@ -52,10 +53,14 @@ class PaymentRepository
 
         $service = $this->getServiceByProvider($payload['payment_method']);
         $payment = $service->makePayment($payPayload);
+
         return $this->handlePaymentResponse($payload['payment_method'], $service, $payment);
     }
 
-    private function handlePaymentResponse($payment_method, PaymentContract $service, $response)
+    /**
+     * @throws PaymentErrorException
+     */
+    private function handlePaymentResponse($payment_method, PaymentContract $service, $response): array
     {
         $responseValidated = $service->handleResponse($payment_method, $response);
 
@@ -73,7 +78,7 @@ class PaymentRepository
     {
         $valid_methods = ['ccr', 'pix'];
 
-        if (!array_search($method, $valid_methods)) {
+            if (!array_search($method, $valid_methods)) {
             throw new InvalidPaymentMethodException("The method " . $method . " is invalid");
         }
     }
