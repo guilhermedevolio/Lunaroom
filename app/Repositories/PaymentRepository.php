@@ -71,6 +71,11 @@ class PaymentRepository
         return $responseValidated;
     }
 
+     public function handlePaymentCallback(array $payload)
+    {
+
+    }
+
     /**
      * @throws InvalidPaymentMethodException
      */

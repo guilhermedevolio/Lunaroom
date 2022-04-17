@@ -49,4 +49,16 @@ class PaymentController extends Controller
             return response()->json(['status' => 'error', 'error' => "Ocorreu um erro ao gerar o link de pagamentox"]);
         }
     }
+
+    public function handlePaymentCallback(string $provider, Request $request)
+    {
+        $payload = $request->all();
+        $payload['provider'] => $provider;
+
+        try {
+            $this->repository->handlePaymentCallback($payload);
+        } catch (\Exception $ex) {
+
+        }
+    }
 }

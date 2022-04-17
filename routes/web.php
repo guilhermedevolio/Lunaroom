@@ -40,9 +40,11 @@ Route::prefix('auth')->middleware(['only_visitant'])->group(function () {
     Route::post('register', [AuthController::class, 'postUser'])->name('post.register');
 });
 
-Route::get('/test', [PaymentController::class, 'teste']);
-
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::prefix('callback')->group(function() {
+    Route::post('/payment/{provider}', [PaymentController::class, 'handlePaymentCallback'])->name('payment-callback');
+});
 
 //User Routes
 Route::middleware(['auth'])->group(function () {
@@ -130,7 +132,6 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
         Route::get('/', [VoucherController::class, 'viewCreateVoucher'])->name('create-voucher');
         Route::post('/', [VoucherController::class, 'postVoucher'])->name('post-voucher');
     });
-
 
     Route::post('/addUserCourse', [CourseController::class, 'addCourseUser'])->name('add-course-to-user');
     Route::delete('/removeUserCourse', [CourseController::class, 'removeCourseUser'])->name('remove-course-to-user');
