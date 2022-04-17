@@ -30,8 +30,8 @@ class StoreController extends Controller
     }
 
     public function addToCart(Request $request) {
-        Session::put('credits', $request->get('credits') + (int) Session::get('credits'));
-        return response()->json(['status' => 1, 'price' => Session::get('credits') * 0.10, 'credits' => Session::get('credits')]);
+        Session::put('cart', $request->get('credits'));
+        return response()->json(['status' => 1, 'cart' => Session::get('cart')]);
     }
 
     public function clearCart(Request $request) {

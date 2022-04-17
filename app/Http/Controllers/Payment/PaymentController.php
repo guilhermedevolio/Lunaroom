@@ -9,8 +9,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Payment\ExecPaymentRequest;
 use App\Repositories\PaymentRepository;
 use App\Services\MercadoPagoService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
@@ -25,7 +27,14 @@ class PaymentController extends Controller
 
     public function viewCheckout()
     {
-        return view('campus.payment.checkout');
+        if(!Session::get('cart')) {
+            return redirect('campus');
+        }
+
+        $totalCartCreditsValue = Session::get('cart');
+        $paymentValue = $totalCartCreditsValue * 0.10;
+
+        return view('campus.payment.checkout', compact('totalCartCreditsValue', 'paymentValue'));
     }
 
     public function viewPayPix(string $payloadbase64)
@@ -45,19 +54,19 @@ class PaymentController extends Controller
             return response()->json(['status' => 'error', 'error' => $ex->getMessage()]);
         } catch (PaymentErrorException $ex) {
             return response()->json(['status' => 'error', 'error' => $ex->getMessage()]);
-        } catch (\Exception $ex) {
-            return response()->json(['status' => 'error', 'error' => "Ocorreu um erro ao gerar o link de pagamentox"]);
+        } catch (Exception $ex) {
+            return response()->json(['status' => 'error', 'error' => $ex->getMessage()]);
         }
     }
 
     public function handlePaymentCallback(string $provider, Request $request)
     {
         $payload = $request->all();
-        $payload['provider'] => $provider;
+        $payload['provider'] = $provider;
 
         try {
             $this->repository->handlePaymentCallback($payload);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
 
         }
     }

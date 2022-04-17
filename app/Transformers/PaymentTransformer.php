@@ -14,7 +14,7 @@ class PaymentTransformer
     {
         return [
             'sale_id' => $sale_id,
-            'total' => 10,
+            'total' => $total,
             'product' => $product_name,
             'payment_method' => $payment_method,
             'payer' => $payer

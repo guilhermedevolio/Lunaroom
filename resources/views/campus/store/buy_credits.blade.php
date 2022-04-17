@@ -67,8 +67,11 @@
                         if(e.status == 1) {
                             toastr.success('Produto Adicionado com sucesso');
                             loadingInput.hide();
-                            return btn.show();
+                            btn.show()
+                            return window.location.href = "/pay/checkout";
                         }
+
+                        return window.location.href = "/pay/checkout";
 
                         toastr.success('Erro ao adicionar produto');
                     },
