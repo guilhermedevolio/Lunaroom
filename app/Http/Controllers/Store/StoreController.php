@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Store;
 use App\Http\Controllers\Controller;
 use App\Repositories\StoreRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
@@ -27,6 +28,15 @@ class StoreController extends Controller
     {
         $packages = [250, 500];
         return view('campus.store.buy_credits', compact('packages'));
+    }
+
+    public function UserPurchasesView()
+    {
+        $userSales = Auth::user()
+            ->sales()
+            ->orderBy('created_at', 'DESC')
+            ->paginate(5);
+        return view('campus.store.user_purchases', compact('userSales'));
     }
 
     public function addToCart(Request $request) {

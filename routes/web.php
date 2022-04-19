@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Notification\NotificationController;
 use App\Http\Controllers\Payment\PaymentController;
+use App\Http\Controllers\Reports\SaleReportController;
 use App\Http\Controllers\Store\StoreController;
 use App\Http\Controllers\Transactions\TransactionController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Voucher\VoucherController;
+use App\Repositories\PaymentRepository;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -41,7 +43,7 @@ Route::prefix('auth')->middleware(['only_visitant'])->group(function () {
 });
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('test', [\App\Repositories\PaymentRepository::class, 'searchSaleById']);
+Route::get('test', [PaymentRepository::class, 'searchSaleById']);
 Route::prefix('callback')->group(function() {
     Route::post('/payment/{provider}', [PaymentController::class, 'handlePaymentCallback'])->name('payment-callback');
 });
@@ -88,6 +90,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/add', [StoreController::class, 'addToCart'])->name('add-to-cart');
     });
 
+    Route::prefix('purchases')->group(function() {
+        Route::get('my', [StoreController::class, 'UserPurchasesView'])->name('my-purchases');
+    });
 });
 
 //Admin Routes
@@ -135,4 +140,10 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
 
     Route::post('/addUserCourse', [CourseController::class, 'addCourseUser'])->name('add-course-to-user');
     Route::delete('/removeUserCourse', [CourseController::class, 'removeCourseUser'])->name('remove-course-to-user');
+
+    //Reports
+    Route::prefix('reports')->group(function() {
+        Route::get('invoicing', [SaleReportController::class, 'InvoicingReport'])->name('report-sales');
+    });
+
 });

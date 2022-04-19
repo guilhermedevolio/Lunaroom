@@ -44,7 +44,12 @@ class PaymentRepository
         }
 
         $user = Auth::user();
-        $sale = $user->sales()->create(['value' => $paymentValue, 'credits' => $totalCartCreditsValue, 'payment_method' => $payload['payment_method']]);
+        $sale = $user->sales()->create([
+            'value' => $paymentValue,
+            'credits' => $totalCartCreditsValue,
+            'payment_method' => $payload['payment_method'],
+            'status' => SaleEnum::PENDENT
+        ]);
 
         // TODO: Refactor this (it's garbage at the moment), payload not needed, but this should have a validation by the payment method instead of a global validation
         $payPayload = (new PaymentTransformer())

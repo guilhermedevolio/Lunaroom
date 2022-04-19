@@ -23,10 +23,12 @@ class NotificationControllerTest extends TestCase
         $this->actingAs($user);
 
         // Act
-        $response = $this->get(route('get-notifications'));
+        $payload = ['credits' => 300];
+        $response = $this->get(route('get-notifications'), $payload);
 
         // Assert
-        $response->assertViewHas('notifications');
+        $response->assertStatus(200);
+        $response->assertSessionHas('credits', 300);
     }
 
 }

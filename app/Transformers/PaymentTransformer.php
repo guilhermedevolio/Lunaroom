@@ -4,6 +4,7 @@
 namespace App\Transformers;
 
 
+use App\Enums\SaleEnum;
 use App\Enums\Services\MercadoPagoEnum;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -46,5 +47,16 @@ class PaymentTransformer
             'sale_id' => $payment_id,
             'sale_status' => $payment_status
         ];
+    }
+
+    public function friendlyPaymentStatus($status): string
+    {
+
+        return match ($status) {
+            SaleEnum::APPROVED => "Aprovado",
+            SaleEnum::PENDENT =>  "Aguardando Pagamento",
+            SaleEnum::CANCELED => "Cancelado",
+        };
+
     }
 }

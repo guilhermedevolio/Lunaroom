@@ -95,6 +95,29 @@
                             </div>
                         </li>
 
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+
+                            </span>
+                                <span class="nav-link-title">
+                                Relatórios
+                            </span>
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-menu-columns">
+                                    <div class="dropdown-menu-column">
+                                        <a class="dropdown-item" href="{{route('report-sales')}}">
+                                            Relatório de Faturamento
+                                        </a>
+                                        <a class="dropdown-item" href="">
+                                            Relatório por Cursos
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
                     </ul>
                 </div>
             </div>

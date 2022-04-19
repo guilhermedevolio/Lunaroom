@@ -62,7 +62,6 @@ class MercadoPagoService implements PaymentContract
     {
         $sale_id = $payload['sale_id'];
         $sale = $this->getSaleById($sale_id);
-        $status = "P";
 
         switch ($sale['status']) {
             case 'pending':
@@ -70,6 +69,10 @@ class MercadoPagoService implements PaymentContract
                 break;
             case 'approved':
                 $status = SaleEnum::APPROVED;
+            default: {
+                $status = SaleEnum::PENDENT;
+                break;
+            }
         }
 
         return (new PaymentTransformer())->callbackPaymentSchema($status, $sale_id);
