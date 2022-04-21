@@ -15,4 +15,8 @@ class UserCourse extends Model
     protected $table = 'users_courses';
 
     protected $fillable = ['id', 'user_id', 'course_id'];
+
+    public function user() {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

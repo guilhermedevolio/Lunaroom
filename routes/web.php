@@ -43,8 +43,7 @@ Route::prefix('auth')->middleware(['only_visitant'])->group(function () {
 });
 
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('test', [PaymentRepository::class, 'searchSaleById']);
-Route::prefix('callback')->group(function() {
+Route::prefix('callback')->group(function () {
     Route::post('/payment/{provider}', [PaymentController::class, 'handlePaymentCallback'])->name('payment-callback');
 });
 
@@ -59,6 +58,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('course')->group(function () {
         Route::get('/my', [CourseController::class, 'getMyCourses'])->name('my-courses');
+        Route::get('/buy/{courseId}', [CourseController::class, 'buyCourseView'])->name('buy-course-view');
+        Route::post('/buy', [CourseController::class, 'buyCourse'])->name('post-buy-course');
         Route::get('/{courseId}', [CourseController::class, 'getCourseWebsite'])->name('get-course');
     });
 
@@ -69,28 +70,28 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/redeem-voucher', [VoucherController::class, 'viewRedeemVoucher'])->name('get-redeem-voucher');
     Route::post('/redeem-voucher', [VoucherController::class, 'redeemVoucher'])->name('redeem-voucher');
 
-    Route::prefix('me')->group(function() {
+    Route::prefix('me')->group(function () {
         Route::get('account', [ProfileController::class, 'viewUserProfile'])->name('config-user-profile');
         Route::get('public-profile', [ProfileController::class, 'viewConfigPublicProfile'])->name('config-public-profile');
         Route::post('create-profile', [ProfileController::class, 'createPublicProfile'])->name('create-public-profile');
         Route::put('update-public-profile', [ProfileController::class, 'updatePublicProfile'])->name('update-public-profile');
     });
 
-    Route::prefix('credits')->group(function() {
+    Route::prefix('credits')->group(function () {
         Route::get('buy', [StoreController::class, 'viewBuyCredits'])->name('view-buy-credits');
     });
 
-    Route::prefix('pay')->group(function() {
+    Route::prefix('pay')->group(function () {
         Route::get('checkout', [PaymentController::class, 'viewCheckout'])->name('view-checkout');
         Route::post('/', [PaymentController::class, 'processPayment'])->name('post-execute-transaction');
         Route::get('pix/{payloadbase64}', [PaymentController::class, 'viewPayPix'])->name('view-pay-pix');
     });
 
-    Route::prefix('cart')->group(function(){
+    Route::prefix('cart')->group(function () {
         Route::post('/add', [StoreController::class, 'addToCart'])->name('add-to-cart');
     });
 
-    Route::prefix('purchases')->group(function() {
+    Route::prefix('purchases')->group(function () {
         Route::get('my', [StoreController::class, 'UserPurchasesView'])->name('my-purchases');
     });
 });
@@ -142,7 +143,7 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::delete('/removeUserCourse', [CourseController::class, 'removeCourseUser'])->name('remove-course-to-user');
 
     //Reports
-    Route::prefix('reports')->group(function() {
+    Route::prefix('reports')->group(function () {
         Route::get('invoicing', [SaleReportController::class, 'InvoicingReport'])->name('report-sales');
     });
 

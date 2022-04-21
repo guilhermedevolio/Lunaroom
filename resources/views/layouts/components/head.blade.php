@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{asset('plugins/datatables/jquery.dataTables.min.css')}}">
     <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
 
 </head>
 <style>

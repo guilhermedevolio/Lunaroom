@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CourseRepository
@@ -32,9 +33,14 @@ class CourseRepository
         return $this->model->all();
     }
 
+    public function getCourseById($id)
+    {
+        return $this->model->find($id);
+    }
+
     public function getCourse($id): Model|Collection|Builder|array|null
     {
-        return $this->model->with(['modules.lessons'])->findOrFail($id);
+        return $this->model->with(['modules.lessons', 'students.user'])->findOrFail($id);
     }
 
 
@@ -83,9 +89,8 @@ class CourseRepository
             throw new Exception('User already owns the course', '302');
         }
 
-        return DB::transaction(function() use ($payload,$user) {
+        return DB::transaction(function () use ($payload, $user) {
             $user->courses()->attach(['course_id' => $payload["course_id"]]);
-
             $user->notify(new AdminAddCourseToUser($user, $payload["course_id"]));
         });
 
@@ -106,5 +111,21 @@ class CourseRepository
             ->delete();
     }
 
+    public function buyCourse(array $payload): bool
+    {
+        $user_credits = Auth::user()->wallet->credits;
+        $course = $this->getCourseById($payload['course_id']);
+
+        if ($user_credits < $course['price']) {
+            throw new Exception("You don't have enough credits");
+        }
+
+        return DB::transaction(function () use ($payload, $course) {
+            Auth::user()->wallet->withdraw($course['price']);
+            $this->addCourseToUser(['course_id' => $payload['course_id'], 'user_id' => Auth::user()->id]);
+            return true;
+        });
+
+    }
 
 }

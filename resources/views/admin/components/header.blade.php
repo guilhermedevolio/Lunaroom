@@ -39,7 +39,7 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="{{route('dash.admin')}}">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-
+                                    <i class="fa fa-home"></i>
                                 </span>
                                 <span class="nav-link-title">
                                     Home
@@ -49,8 +49,10 @@
 
                         <li class="nav-item dropdown">
 
-                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"  role="button" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                               role="button" aria-expanded="false">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                    <i class="fa fa-user"></i>
 
                                 </span>
                                 <span class="nav-link-title">
@@ -73,11 +75,12 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                               role="button" aria-expanded="false">
                             <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-
+                                <i class="fas fa-graduation-cap" aria-hidden="true"></i>
                             </span>
-                            <span class="nav-link-title">
+                                <span class="nav-link-title">
                                 Cursos
                             </span>
                             </a>
@@ -96,9 +99,10 @@
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                               role="button" aria-expanded="false">
                             <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-
+                                <i class="fa fa-file" aria-hidden="true"></i>
                             </span>
                                 <span class="nav-link-title">
                                 Relatórios

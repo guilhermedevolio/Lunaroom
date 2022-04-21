@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Course;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddCourseToUserRequest;
+use App\Http\Requests\BuyCourseRequest;
 use App\Http\Requests\DeleteUserCourseRequest;
 use App\Http\Requests\PostCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
@@ -123,4 +124,29 @@ class CourseController extends Controller
 
         return $this->success();
     }
+
+    public function buyCourseView($courseId)
+    {
+        $course = $this->repository->getCourseById($courseId);
+
+        if (!$course) {
+            abort(404);
+        }
+
+        return view('campus.courses.checkout', compact('course'));
+    }
+
+    public function buyCourse(BuyCourseRequest $request)
+    {
+        $payload = $request->validated();
+        $payload['user_id'] = \Illuminate\Support\Facades\Auth::user()->id;
+
+        try {
+            $this->repository->buyCourse($request->validated());
+            return $this->success(['ok' => true]);
+        } catch (\Exception $ex) {
+            return $this->error(['message' => $ex->getMessage()]);
+        }
+    }
+
 }

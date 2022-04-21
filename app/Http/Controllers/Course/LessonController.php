@@ -59,8 +59,8 @@ class LessonController extends Controller
         $lesson = $this->repository->getLessonWebsite($lessonId);
 
         if($lesson["init_date"] > Carbon::now()){
-            $date = $lesson["init_date"];
-            return response()->json(['message' => "Esta aula estará disponivel na data $date"], 422);
+            $date = date('d/m/Y', strtotime($lesson["init_date"]));
+            return response()->json(['message' => "Noo! Essa aula estará disponivel no dia $date"], 422);
         }
         return response()->json($lesson);
     }
