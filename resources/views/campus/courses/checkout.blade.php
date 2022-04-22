@@ -13,8 +13,10 @@
                         <div class="alert alert-warning">Você não possui créditos suficientes, deseja comprar {{$course->price - \Illuminate\Support\Facades\Auth::user()->wallet->credits }} créditos agora?</div>
                         <a class="btn btn-success w-100 btn-add-cart">Comprar</a>
                         <input type="hidden" id="necessary_credits" value="{{$course->price - \Illuminate\Support\Facades\Auth::user()->wallet->credits }}">
+                 \   @else
+                        <a class="btn btn-success w-100 btn-buy">Comprar</a>
                     @endif
-                    <a class="btn btn-success w-100 btn-buy">Comprar</a>
+
 
                 </div>
                 <div class="rigth d-flex align-items-center">
@@ -53,7 +55,7 @@
 
             $('.btn-buy').on('click', function() {
                 $.ajax({
-                    url: '{{route('post-buy-course')}}',
+                    url: '{{route('post-join-course')}}',
                     type: 'POST',
                     data: {
                         course_id: {{$course->id}}

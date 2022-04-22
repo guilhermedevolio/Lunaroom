@@ -58,8 +58,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('course')->group(function () {
         Route::get('/my', [CourseController::class, 'getMyCourses'])->name('my-courses');
-        Route::get('/buy/{courseId}', [CourseController::class, 'buyCourseView'])->name('buy-course-view');
-        Route::post('/buy', [CourseController::class, 'buyCourse'])->name('post-buy-course');
+        Route::get('/join/{courseId}', [CourseController::class, 'joinCourseView'])->name('join-course-view');
+        Route::post('/join', [CourseController::class, 'joinCourse'])->name('post-join-course');
         Route::get('/{courseId}', [CourseController::class, 'getCourseWebsite'])->name('get-course');
     });
 

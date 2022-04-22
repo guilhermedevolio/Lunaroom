@@ -20,6 +20,6 @@ class Sale extends Model
 
     public function logs(): HasMany
     {
-        return $this->hasMany(SaleLog::class);
+        return $this->hasMany('sales_log', 'sale_id', 'id');
     }
 }

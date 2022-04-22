@@ -125,7 +125,7 @@ class CourseController extends Controller
         return $this->success();
     }
 
-    public function buyCourseView($courseId)
+    public function joinCourseView($courseId)
     {
         $course = $this->repository->getCourseById($courseId);
 
@@ -136,13 +136,13 @@ class CourseController extends Controller
         return view('campus.courses.checkout', compact('course'));
     }
 
-    public function buyCourse(BuyCourseRequest $request)
+    public function joinCourse(BuyCourseRequest $request)
     {
         $payload = $request->validated();
         $payload['user_id'] = \Illuminate\Support\Facades\Auth::user()->id;
 
         try {
-            $this->repository->buyCourse($request->validated());
+            $this->repository->joinCourse($request->validated());
             return $this->success(['ok' => true]);
         } catch (\Exception $ex) {
             return $this->error(['message' => $ex->getMessage()]);

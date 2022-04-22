@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\UserCourse;
 use App\Notifications\AdminAddCourseToUser;
 use App\Traits\UploaderFileTrait;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -89,8 +90,13 @@ class CourseRepository
             throw new Exception('User already owns the course', '302');
         }
 
-        return DB::transaction(function () use ($payload, $user) {
-            $user->courses()->attach(['course_id' => $payload["course_id"]]);
+        $course = $this->getCourseById($payload['course_id']);
+        $credits = $course->price ?? 0;
+
+        return DB::transaction(function () use ($payload, $user, $credits) {
+            $user->courses()->attach($payload['course_id'], [
+                'credits' => $credits,
+                'joined_at' => Carbon::now()]);
             $user->notify(new AdminAddCourseToUser($user, $payload["course_id"]));
         });
 
@@ -111,7 +117,7 @@ class CourseRepository
             ->delete();
     }
 
-    public function buyCourse(array $payload): bool
+    public function joinCourse(array $payload): bool
     {
         $user_credits = Auth::user()->wallet->credits;
         $course = $this->getCourseById($payload['course_id']);
