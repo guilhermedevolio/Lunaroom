@@ -7,7 +7,11 @@
         <button class="btn btn-success">Filtro Avançado</button>
         <div class="row row-deck row-cards mt-3">
             <div class="col-sm-6 col-lg-3">
-                <div class="card">
+
+            @if(empty($data['sales']) || empty($data['values']))
+                <div class="alert alert-danger">Ainda não existe nenhum valor para gerar relatórios</div>
+            @else
+            <div class="card">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="subheader"><font style="vertical-align: inherit;"><font
@@ -121,37 +125,9 @@
             </div>
         </div>
     </div>
+            @endif
 
 
-    <script>
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const myChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Valor Cancelado', 'Valor Pago', 'Valor Pendente'],
-                datasets: [{
-                    label: 'Status de Vendas',
-                    data: [{{$data['values']['canceled_value']}}, {{$data['values']['pendent_value']}}, {{$data['values']['canceled_value']}}],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
+
+
 @endsection

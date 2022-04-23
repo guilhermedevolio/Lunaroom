@@ -59,11 +59,6 @@ class User extends Authenticatable
         return $this->attributes["password"] = Hash::make($value);
     }
 
-    public function wallet(): HasOne
-    {
-        return $this->hasOne(Wallet::class);
-    }
-
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class);

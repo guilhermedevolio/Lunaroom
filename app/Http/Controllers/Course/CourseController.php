@@ -125,28 +125,7 @@ class CourseController extends Controller
         return $this->success();
     }
 
-    public function joinCourseView($courseId)
-    {
-        $course = $this->repository->getCourseById($courseId);
 
-        if (!$course) {
-            abort(404);
-        }
 
-        return view('campus.courses.checkout', compact('course'));
-    }
-
-    public function joinCourse(BuyCourseRequest $request)
-    {
-        $payload = $request->validated();
-        $payload['user_id'] = \Illuminate\Support\Facades\Auth::user()->id;
-
-        try {
-            $this->repository->joinCourse($request->validated());
-            return $this->success(['ok' => true]);
-        } catch (\Exception $ex) {
-            return $this->error(['message' => $ex->getMessage()]);
-        }
-    }
 
 }

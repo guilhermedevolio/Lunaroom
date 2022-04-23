@@ -9,8 +9,8 @@
             <div id="left" style="display: flex; flex-direction: column;  width: 50%; ">
                 <h2 style="font-size: 40px;">{{$course->title}}</h2>
                 <p>Olá {{Auth::user()->name}}, esse é o curso {{$course->title}}, de uma olhada abaixo para ver  sobre o curso, se você se interessar , aproveite para se inscrever</p>
-                <p class="font-weight-bold mb-4">Preço: {!! $course->price !!} Lunapoints</p>
-                <a class="btn btn-success w-25" href="{{route('join-course-view', $course->id)}}"> Me Inscrever </a>
+                <p class="font-weight-bold mb-4">Preço: R$ {!! $course->price !!}</p>
+                <a class="btn btn-success w-25" onclick="addCourseToCart({{$course->id}})"> Me Inscrever </a>
             </div>
             <div class="right" style="width: 10%;">
                 <img  src="{{asset('storage/courses/'.$course->image)}}" style="max-width: 500px; border-radius: 7px;" alt="">
@@ -72,5 +72,16 @@
             }
         }
     </style>
+    <script>
+        function addCourseToCart() {
+            $.get({
+                url: '{{route('add-to-cart', $course->id)}}/' ,
+                type: 'GET',
+                success: function() {
+
+                }
+            });
+        }
+    </script>
 
 @endsection

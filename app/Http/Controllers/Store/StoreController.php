@@ -3,19 +3,25 @@
 namespace App\Http\Controllers\Store;
 
 use App\Http\Controllers\Controller;
+use App\Models\Course;
+use App\Repositories\CourseRepository;
 use App\Repositories\StoreRepository;
+use App\Traits\ResponseTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 class StoreController extends Controller
 {
+    use ResponseTrait;
+
     protected StoreRepository $repository;
 
-    public function __construct(StoreRepository $repository)
+    public function __construct(StoreRepository $repository, CourseRepository $courseRepository)
     {
         $this->repository = $repository;
+        $this->courseRepository = $courseRepository;
     }
 
     public function viewStore(): View
@@ -24,10 +30,31 @@ class StoreController extends Controller
         return view('campus.store.store', compact('courses'));
     }
 
-    public function viewBuyCredits()
+    public function summaryCart()
     {
-        $packages = [250, 500];
-        return view('campus.store.buy_credits', compact('packages'));
+        $totalCartValue = $this->repository->getTotalCartValue();
+        $cartCourses = $this->repository->getCartCourses();
+        dd($cartCourses);
+    }
+
+    public function addItemToCart(int $courseId): JsonResponse
+    {
+        try {
+            $this->repository->addItemCart($courseId);
+            return $this->success(['ok' => true]);
+        } catch (\Exception $ex) {
+            return $this->error(['ok' => false, 'message' => $ex->getMessage()]);
+        }
+    }
+
+    public function removeItemCart(int $courseId): JsonResponse
+    {
+        try {
+            $this->repository->removeItemCart($courseId);
+            return $this->success(['ok' => true]);
+        } catch (\Exception $ex) {
+            return $this->error(['ok' => false, 'message' => $ex->getMessage()]);
+        }
     }
 
     public function UserPurchasesView()
@@ -36,18 +63,17 @@ class StoreController extends Controller
             ->sales()
             ->orderBy('created_at', 'DESC')
             ->paginate(5);
+
         return view('campus.store.user_purchases', compact('userSales'));
     }
 
-    public function addToCart(Request $request) {
-        Session::put('cart', $request->get('credits'));
-        return response()->json(['status' => 1, 'cart' => Session::get('cart')]);
+    public function addToCart(Request $request)
+    {
+
     }
 
-    public function clearCart(Request $request) {
-        Session::remove('credits');
-        return response()->json(['status' => 1, 'price' => Session::get('credits') * 0.10, 'credits' => Session::get('credits')]);
+    public function clearCart(Request $request)
+    {
+
     }
-
-
 }

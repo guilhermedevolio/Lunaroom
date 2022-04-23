@@ -4,7 +4,6 @@ use App\Http\Controllers\Notification\NotificationController;
 use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\Reports\SaleReportController;
 use App\Http\Controllers\Store\StoreController;
-use App\Http\Controllers\Transactions\TransactionController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Voucher\VoucherController;
 use App\Repositories\PaymentRepository;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\User\WalletController;
 use App\Http\Controllers\Campus\CampusController;
 use App\Http\Controllers\Course\CourseController;
 use App\Http\Controllers\Course\ModuleController;
@@ -51,15 +49,8 @@ Route::prefix('callback')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/campus', [CampusController::class, 'viewCampus'])->name('campus');
 
-    Route::prefix('transaction')->group(function () {
-        Route::post('new', [TransactionController::class, 'postTransaction'])->name('post-transaction');
-        Route::get('my-transactions', [TransactionController::class, 'getUserLoggedTransactions'])->name('get-transactions');
-    });
-
     Route::prefix('course')->group(function () {
         Route::get('/my', [CourseController::class, 'getMyCourses'])->name('my-courses');
-        Route::get('/join/{courseId}', [CourseController::class, 'joinCourseView'])->name('join-course-view');
-        Route::post('/join', [CourseController::class, 'joinCourse'])->name('post-join-course');
         Route::get('/{courseId}', [CourseController::class, 'getCourseWebsite'])->name('get-course');
     });
 
@@ -67,18 +58,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/store', [StoreController::class, 'viewStore'])->name('store');
     Route::get('/notifications', [NotificationController::class, 'viewNotifications'])->name('get-notifications');
-    Route::get('/redeem-voucher', [VoucherController::class, 'viewRedeemVoucher'])->name('get-redeem-voucher');
-    Route::post('/redeem-voucher', [VoucherController::class, 'redeemVoucher'])->name('redeem-voucher');
 
     Route::prefix('me')->group(function () {
         Route::get('account', [ProfileController::class, 'viewUserProfile'])->name('config-user-profile');
         Route::get('public-profile', [ProfileController::class, 'viewConfigPublicProfile'])->name('config-public-profile');
         Route::post('create-profile', [ProfileController::class, 'createPublicProfile'])->name('create-public-profile');
         Route::put('update-public-profile', [ProfileController::class, 'updatePublicProfile'])->name('update-public-profile');
-    });
-
-    Route::prefix('credits')->group(function () {
-        Route::get('buy', [StoreController::class, 'viewBuyCredits'])->name('view-buy-credits');
     });
 
     Route::prefix('pay')->group(function () {
@@ -88,7 +73,9 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('cart')->group(function () {
-        Route::post('/add', [StoreController::class, 'addToCart'])->name('add-to-cart');
+        Route::get('/add/{courseId}', [StoreController::class, 'addItemToCart'])->name('add-to-cart');
+        Route::get('/remove/{courseId}', [StoreController::class, 'addItemToCart'])->name('remove-to-cart');
+        Route::get('/summary', [StoreController::class, 'summaryCart'])->name('summary-cart');
     });
 
     Route::prefix('purchases')->group(function () {
@@ -105,11 +92,6 @@ Route::prefix('admin')->middleware(['admin'])->group(function () {
     Route::get('user/{user}', [UserController::class, 'getUserById'])->name('get-user');
     Route::put('user/{user}', [UserController::class, 'putUser'])->name('put-user');
     Route::delete('user/{user}', [UserController::class, 'deleteUser'])->name('delete-user');
-
-    //Wallets Routes
-    Route::prefix('wallet')->group(function () {
-        Route::put('update/{walletId}', [WalletController::class, 'updateWalletAsAdmin'])->name('put-wallet');
-    });
 
     Route::prefix('course')->group(function () {
         Route::get('courses', [CourseController::class, 'getCourses'])->name('courses');

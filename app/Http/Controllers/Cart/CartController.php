@@ -4,7 +4,9 @@
 namespace App\Http\Controllers\Cart;
 
 
-class CartController
+use App\Http\Controllers\Controller;
+
+class CartController extends Controller
 {
 
 }
