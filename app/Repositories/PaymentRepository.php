@@ -91,21 +91,8 @@ class PaymentRepository
         $service = $this->getServiceByProvider($payload['provider']);
         $response = $service->handleCallback($payload);
 
-        $sale = Sale::find(1)->first();
-        $sale->logs()->create(['field' => 'callbackRepo', 'value' => json_encode($response)]);
-
-        switch ($response['sale_status']) {
-            case SaleEnum::APPROVED:
-            {
-                $sale->update(['status' => SaleEnum::APPROVED]);
-                break;
-            }
-            case SaleEnum::PENDENT:
-            {
-                $sale->update(['status' => SaleEnum::PENDENT]);
-                break;
-            }
-        }
+        $sale = Sale::find($response['sale_id'])->first();
+        $sale->update(['status' => $response['sale_status']]);
 
         return ['ok' => true];
     }

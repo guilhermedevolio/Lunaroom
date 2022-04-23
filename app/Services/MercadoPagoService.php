@@ -65,23 +65,14 @@ class MercadoPagoService implements PaymentContract
         $sale_id = $payload['data']['id'];
         $sale = $this->getSaleById($sale_id);
 
-        $sale_ = Sale::find(1)->first();
-        $sale_->logs()->create(['field' => 'consulta', 'value' => json_encode($sale)]);
+        $status = match ($sale['status']) {
+            'pending' => SaleEnum::PENDENT,
+            'approved' => SaleEnum::APPROVED,
+            'canceled' => SaleEnum::CANCELED,
+            default => SaleEnum::PENDENT
+        };
 
-        switch ($sale['status']) {
-            case 'pending':
-                $status = SaleEnum::PENDENT;
-                break;
-            case 'approved':
-                $status = SaleEnum::APPROVED;
-                break;
-            default: {
-                $status = SaleEnum::PENDENT;
-                break;
-            }
-        }
-
-        return (new PaymentTransformer())->callbackPaymentSchema($status, $sale_id);
+        return (new PaymentTransformer())->callbackPaymentSchema($status, $sale_id, $sale);
     }
 
     public function handleResponse($payment_method, $response)

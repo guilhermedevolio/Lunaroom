@@ -43,11 +43,12 @@ class PaymentTransformer
         return $payload;
     }
 
-    public function callbackPaymentSchema($payment_status, $payment_id): array
+    public function callbackPaymentSchema($payment_status, $payment_id, $response): array
     {
         return (array) [
             'sale_id' => $payment_id,
-            'sale_status' => $payment_status
+            'sale_status' => $payment_status,
+            'provider_response' => $response
         ];
     }
 
