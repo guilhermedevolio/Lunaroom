@@ -19,7 +19,7 @@ class CreateSalesTable extends Migration
             $table->foreignId('user_id')->references('id')->on('users');
             $table->decimal('value');
             $table->string('payment_method');
-            $table->string('transaction_nsu');
+            $table->string('transaction_nsu')->nullable();
             $table->char('status')->default(SaleEnum::PENDENT);
             $table->timestamps();
         });

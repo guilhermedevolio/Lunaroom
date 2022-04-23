@@ -8,28 +8,37 @@
              style="max-width: 1600px !important; margin: 0 auto !important;">
             <div id="left" style="display: flex; flex-direction: column;  width: 50%; ">
                 <h2 style="font-size: 40px;">{{$course->title}}</h2>
-                <p>Olá {{Auth::user()->name}}, esse é o curso {{$course->title}}, de uma olhada abaixo para ver  sobre o curso, se você se interessar , aproveite para se inscrever</p>
+                <p>Olá {{Auth::user()->name}}, esse é o curso {{$course->title}}, de uma olhada abaixo para ver sobre o
+                    curso, se você se interessar , aproveite para se inscrever</p>
                 <p class="font-weight-bold mb-4">Preço: R$ {!! $course->price !!}</p>
                 <a class="btn btn-success w-25" onclick="addCourseToCart({{$course->id}})"> Me Inscrever </a>
+                @if(\Illuminate\Support\Facades\Session::has('cart') && isset(\Illuminate\Support\Facades\Session::has('cart')[$course->id]))
+                    <a href="" style="">Remover Produto do Carrinho</a>
+                @endif
             </div>
             <div class="right" style="width: 10%;">
-                <img  src="{{asset('storage/courses/'.$course->image)}}" style="max-width: 500px; border-radius: 7px;" alt="">
+                <img src="{{asset('storage/courses/'.$course->image)}}" style="max-width: 500px; border-radius: 7px;"
+                     alt="">
             </div>
         </div>
     </div>
+
+
+
     <style>
         @media screen and (max-width: 768px) {
             img {
                 max-width: 100% !important;
                 margin-top: 40px;
             }
-            .btn{
+
+            .btn {
                 width: 100% !important;
             }
         }
     </style>
 
-    <div class="container-md mt-3 mb-5" >
+    <div class="container-md mt-3 mb-5">
         <div class="card text-dark mb-3" style="background: #fbfbf8;border: 1px solid #dcdacb;">
             <div class="card-header" style="font-size: 18px; font-weight: bold">Sobre o Curso</div>
             <div class="card-body">
@@ -75,10 +84,10 @@
     <script>
         function addCourseToCart() {
             $.get({
-                url: '{{route('add-to-cart', $course->id)}}/' ,
+                url: '{{route('add-to-cart', $course->id)}}/',
                 type: 'GET',
-                success: function() {
-
+                success: function () {
+                    window.location.href = "{{route('summary-cart')}}"
                 }
             });
         }

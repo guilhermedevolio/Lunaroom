@@ -6,17 +6,19 @@ namespace App\Transformers;
 
 use App\Enums\SaleEnum;
 use App\Enums\Services\MercadoPagoEnum;
+use App\Models\Course;
+use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentTransformer
 {
-    public function paymentSchema($sale_id, $total, $product_name, $payment_method, User $payer)
+    public function paymentSchema(Sale $sale, $total, Course $items, string $payment_method, User $payer)
     {
         return [
-            'sale_id' => $sale_id,
+            'sale' => $sale,
             'total' => $total,
-            'product' => $product_name,
+            'items' => $items,
             'payment_method' => $payment_method,
             'payer' => $payer
         ];

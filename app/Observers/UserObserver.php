@@ -2,7 +2,6 @@
 
 namespace App\Observers;
 
-use App\Enums\WalletEnum;
 use App\Models\User;
 
 class UserObserver

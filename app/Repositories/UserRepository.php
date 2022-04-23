@@ -34,7 +34,7 @@ class UserRepository
 
     public function getUserById(int $userId)
     {
-        return $this->model->with(['wallet', 'courses'])->findOrFail($userId);
+        return $this->model->with(['courses'])->findOrFail($userId);
     }
 
     public function updateUser(int $userId, array $payload): bool

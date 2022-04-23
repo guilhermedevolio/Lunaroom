@@ -6,8 +6,6 @@
     @section('menu')
         <h2>Editar Meus Dados Pessoais</h2>
         <br>
-        <h3>Seus Créditos: <strong> {{Auth::user()->wallet->credits}}</strong></h3>
-        <br>
         <form action="">
             <div class="mb-3">
                 <label for="" class="form-label">Seu Nome</label>

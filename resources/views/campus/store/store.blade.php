@@ -31,6 +31,20 @@
             </div>
         </div>
     </div>
+
+    <div class="container-xl">
+        <div class="container-xl">
+            <div class="row mt-3">
+                <h2 class="" style="font-size: 30px;">Planos de Assinatura</h2>
+                <p>Ao invés de comprar curso por curso assine um plano recorrente e tenha acesso a todos os cursos desse
+                    plano.</p>
+
+            </div>
+            <div class="paginate mt-3">
+                {{$courses->links()}}
+            </div>
+        </div>
+    </div>
     <style>
         #image {
             width: 100%;

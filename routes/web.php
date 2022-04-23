@@ -74,7 +74,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('cart')->group(function () {
         Route::get('/add/{courseId}', [StoreController::class, 'addItemToCart'])->name('add-to-cart');
-        Route::get('/remove/{courseId}', [StoreController::class, 'addItemToCart'])->name('remove-to-cart');
+        Route::get('/remove/{courseId}', [StoreController::class, 'removeItemCart'])->name('remove-to-cart');
         Route::get('/summary', [StoreController::class, 'summaryCart'])->name('summary-cart');
     });
 

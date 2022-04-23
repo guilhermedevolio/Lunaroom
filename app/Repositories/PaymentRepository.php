@@ -35,36 +35,40 @@ class PaymentRepository
     public function executeTransaction(array $payload): array
     {
         $this->validatePaymentMethod($payload['payment_method']);
-        $totalCartCreditsValue = Session::get('cart');
-        $paymentValue = $totalCartCreditsValue * 0.10;
-        Session::remove('cart');
+        $totalCartValue = $this->storeRepository->getTotalCartValue();
+        $cartCourses = $this->storeRepository->getCartCourses();
+//        Session::remove('cart');
 
-        if ($paymentValue <= 0) {
+        if ($totalCartValue <= 0) {
             throw new PaymentException("Unable to execute transaction with a value less than 0");
         }
 
         $user = Auth::user();
+
         $sale = $user->sales()->create([
-            'value' => $paymentValue,
-            'credits' => $totalCartCreditsValue,
+            'value' => $totalCartValue,
+            'credits' => 1,
             'payment_method' => $payload['payment_method'],
             'status' => SaleEnum::PENDENT
         ]);
 
-        // TODO: Refactor this (it's garbage at the moment), payload not needed, but this should have a validation by the payment method instead of a global validation
+        foreach ($cartCourses as $course) {
+            $sale->courses()->attach(['course_id' => $course->id, 'value' => $course->price]);
+        }
+
         $payPayload = (new PaymentTransformer())
             ->paymentSchema(
-                $sale->id,
-                $paymentValue,
-                "$totalCartCreditsValue Lunapoints",
-                "pix",
+                $sale,
+                $totalCartValue,
+                $cartCourses,
+                $payload['payment_method'],
                 $user
             );
 
         $service = $this->getServiceByPaymentMethod($payload['payment_method']);
         $payment = $service->makePayment($payPayload);
 
-        $sale->logs()->create(['field' => 'response_send', 'value' => json_encode($payment)]);
+        $sale->logs()->create(['field' => 'response_send_' . $payload['provider'], 'value' => json_encode($payment)]);
         return $this->handlePaymentResponse($payload['payment_method'], $service, $payment);
     }
 
@@ -87,8 +91,8 @@ class PaymentRepository
         $service = $this->getServiceByProvider($payload['provider']);
         $response = $service->handleCallback($payload);
 
-        $sale = Sale::find($response['sale_id'])->first();
-        $sale->logs()->create(['field' => 'callback', 'value' => json_encode($response)]);
+        $sale = Sale::find(1)->first();
+        $sale->logs()->create(['field' => 'callbackRepo', 'value' => json_encode($response)]);
 
         switch ($response['sale_status']) {
             case SaleEnum::APPROVED:

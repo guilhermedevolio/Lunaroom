@@ -33,15 +33,17 @@ class StoreRepository
 
         $cart = Session::get('cart');
 
-        if (!$cart[$courseId]) {
+        if (!isset($cart[$courseId])) {
             $cart[$course->id] = [
-                'course_id' => $course->title,
+                'course_id' => $course->id,
                 'name' => $course->name,
-                'price' => $course->price
+                'price' => $course->price,
+                'qtd' => 1
             ];
 
             Session::put('cart', $cart);
         }
+
 
         return true;
     }
@@ -61,11 +63,7 @@ class StoreRepository
 
     public function getCartCourses()
     {
-        $coursesCart = array_map(function ($val) {
-            return $val['course_id'];
-        }, Session::get('cart'));
-
+        $coursesCart = array_column(Session::get('cart'), 'course_id');
         return Course::whereIn('id', $coursesCart)->get();
-
     }
 }

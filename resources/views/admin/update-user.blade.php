@@ -127,7 +127,7 @@
         </script>
 
 
-    {{-- Courses --}}
+        {{-- Courses --}}
         <div class="card p-3" style="margin-top: 80px">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h2>Gerenciar Cursos</h2>
@@ -137,7 +137,7 @@
                 </button>
 
             </div>
-            <div class="table-responsive" >
+            <div class="table-responsive">
                 <table id="table" class="table table-vcenter card-table">
                     <thead>
                     <tr>
@@ -150,7 +150,7 @@
                         <tr id="">
                             <td>{{$course->title}}</td>
                             <td class="text-muted">
-                                <a class="btn btn-danger" course-id="{{$course->id}}"  id="btn-remove-user-course">Remover</a>
+                                <a class="btn btn-danger" course-id="{{$course->id}}" id="btn-remove-user-course">Remover</a>
                             </td>
                         </tr>
                     @endforeach
@@ -161,7 +161,7 @@
 
     {{--  Modal Add Course      --}}
 
-        <!-- Modal -->
+    <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -173,7 +173,7 @@
                         <div class="mb-3">
                             <label for="" class="form-label">Curso:</label>
                             <select class="form-select" id="select-course" aria-label="Default select example">
-                                <option  selected>Selecione uma opção</option>
+                                <option selected>Selecione uma opção</option>
                                 @foreach($courses as $course)
                                     <option value="{{$course->id}}">{{$course->title}}</option>
                                 @endforeach
@@ -218,11 +218,11 @@
                 })
             })
 
-            $(document).on("click", "#btn-remove-user-course" ,function (e){
+            $(document).on("click", "#btn-remove-user-course", function (e) {
                 e.preventDefault();
                 const course_id = $(this).attr('course-id');
 
-                if(confirm("Certeza que deseja remover o curso " + course_id + " do usuário {{$user->name}} ?")){
+                if (confirm("Certeza que deseja remover o curso " + course_id + " do usuário {{$user->name}} ?")) {
                     $(this).parent().parent().hide();
                     $.ajax({
                         url: "{{route('remove-course-to-user')}}",
@@ -250,45 +250,8 @@
         </script>
 
 
-        <div class="card p-3 mt-5 mb-5">
-            <div class="mb-3">
-                <h2>Editar Carteira {{$user->name}}</h2>
-                <form id="form-wallet" method="POST">
-                    <div class="mb-3">
-                        <label class="form-label">Créditos</label>
-                        <input type="text" name="credits" class="form-control" value="{{$user->wallet->credits}}">
-                    </div>
-                    <button id="btn-update-wallet" type="submit" class="btn btn-primary mt-3 w-100">Atualizar Carteira
-                    </button>
-                </form>
-
-            </div>
-        </div>
-
         <script>
             $('table').DataTable();
-            $('#btn-update-wallet').on('click', (event) => {
-                event.preventDefault();
-                var form = $('#form-wallet').serialize();
-                $.ajax({
-                    url: "{{route('put-wallet', $user->wallet->id)}}",
-                    method: 'PUT',
-                    data: form,
-                    success: function (callback) {
-                        toastr.success('Carteira atualizada com sucesso');
-                    },
-                    error: function (callback) {
-                        if (callback.responseJSON.errors) {
-                            $.each(callback.responseJSON.errors, function (key, value) {
-                                toastr.error(value);
-                            });
-                        } else {
-                            toastr.error('Erro ao atualizar carteira');
-                        }
-                    }
-                })
-
-            })
         </script>
 
 @endsection

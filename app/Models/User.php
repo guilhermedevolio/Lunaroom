@@ -71,7 +71,7 @@ class User extends Authenticatable
             'users_courses',
             'user_id',
             'course_id'
-        )->withPivot(['credits', 'joined_at']);
+        )->withPivot(['joined_at']);
     }
 
     public function profile(): HasOne

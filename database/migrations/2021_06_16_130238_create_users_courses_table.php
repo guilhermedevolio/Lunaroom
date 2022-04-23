@@ -17,7 +17,6 @@ class CreateUsersCoursesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->foreignId('course_id')->references('id')->on('courses');
-            $table->integer('credits');
             $table->timestamp('joined_at');
             $table->timestamps();
         });

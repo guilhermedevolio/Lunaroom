@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Contracts\PaymentContract;
 use App\Enums\SaleEnum;
 use App\Enums\Services\MercadoPagoEnum;
+use App\Models\Sale;
 use App\Models\User;
 use App\Transformers\MercadoPagoTransformer;
 use App\Transformers\PaymentTransformer;
@@ -48,7 +49,8 @@ class MercadoPagoService implements PaymentContract
 
     public function makePayment(array $payload)
     {
-        $transactPayload = (new MercadoPagoTransformer())->getMercadoPagoSchema($payload);
+        $transactPayload = (new MercadoPagoTransformer())
+            ->getMercadoPagoSchema($payload);
 
         try {
             $request = $this->client->request('POST', $this->url, ['body' => json_encode($transactPayload)]);
@@ -60,8 +62,11 @@ class MercadoPagoService implements PaymentContract
 
     public function handleCallback(array $payload): array
     {
-        $sale_id = $payload['sale_id'];
+        $sale_id = $payload['data']['id'];
         $sale = $this->getSaleById($sale_id);
+
+        $sale_ = Sale::find(1)->first();
+        $sale_->logs()->create(['field' => 'consulta', 'value' => json_encode($sale)]);
 
         switch ($sale['status']) {
             case 'pending':

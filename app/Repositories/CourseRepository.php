@@ -91,11 +91,9 @@ class CourseRepository
         }
 
         $course = $this->getCourseById($payload['course_id']);
-        $credits = $course->price ?? 0;
 
-        return DB::transaction(function () use ($payload, $user, $credits) {
+        return DB::transaction(function () use ($payload, $user) {
             $user->courses()->attach($payload['course_id'], [
-                'credits' => $credits,
                 'joined_at' => Carbon::now()]);
             $user->notify(new AdminAddCourseToUser($user, $payload["course_id"]));
         });
@@ -119,15 +117,9 @@ class CourseRepository
 
     public function joinCourse(array $payload): bool
     {
-        $user_credits = Auth::user()->wallet->credits;
         $course = $this->getCourseById($payload['course_id']);
 
-        if ($user_credits < $course['price']) {
-            throw new Exception("You don't have enough credits");
-        }
-
         return DB::transaction(function () use ($payload, $course) {
-            Auth::user()->wallet->withdraw($course['price']);
             $this->addCourseToUser(['course_id' => $payload['course_id'], 'user_id' => Auth::user()->id]);
             return true;
         });

@@ -34,7 +34,7 @@ class StoreController extends Controller
     {
         $totalCartValue = $this->repository->getTotalCartValue();
         $cartCourses = $this->repository->getCartCourses();
-        dd($cartCourses);
+        return view('campus.store.cart', compact('totalCartValue', 'cartCourses'));
     }
 
     public function addItemToCart(int $courseId): JsonResponse

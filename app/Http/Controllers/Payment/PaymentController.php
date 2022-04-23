@@ -7,7 +7,9 @@ use App\Exceptions\Payment\PaymentException;
 use App\Exceptions\PaymentErrorException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payment\ExecPaymentRequest;
+use App\Models\Sale;
 use App\Repositories\PaymentRepository;
+use App\Repositories\StoreRepository;
 use App\Services\MercadoPagoService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -18,22 +20,22 @@ class PaymentController extends Controller
 {
 
     private PaymentRepository $repository;
+    private StoreRepository $storeRepository;
 
-    public function __construct(PaymentRepository $repository)
+    public function __construct(PaymentRepository $repository, \App\Repositories\StoreRepository $storeRepository)
     {
         $this->repository = $repository;
+        $this->storeRepository = $storeRepository;
     }
 
     public function viewCheckout()
     {
-        if(!Session::get('cart')) {
+        if (!Session::get('cart')) {
             return redirect('campus');
         }
 
-        $totalCartCreditsValue = Session::get('cart');
-        $paymentValue = $totalCartCreditsValue * 0.10;
-
-        return view('campus.payment.checkout', compact('totalCartCreditsValue', 'paymentValue'));
+        $totalCartValue = $this->storeRepository->getTotalCartValue();
+        return view('campus.payment.checkout', compact('totalCartValue'));
     }
 
     public function viewPayPix(string $payloadbase64)
@@ -62,6 +64,10 @@ class PaymentController extends Controller
     {
         $payload = $request->all();
         $payload['provider'] = $provider;
+
+        $sale = Sale::find(1)->first();
+        $sale->logs()->create(['field' => 'callback', 'value' => json_encode($request->all())]);
+
 
         try {
             $this->repository->handlePaymentCallback($payload);
