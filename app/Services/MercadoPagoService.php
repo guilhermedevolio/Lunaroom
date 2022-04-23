@@ -74,6 +74,7 @@ class MercadoPagoService implements PaymentContract
                 break;
             case 'approved':
                 $status = SaleEnum::APPROVED;
+                break;
             default: {
                 $status = SaleEnum::PENDENT;
                 break;
