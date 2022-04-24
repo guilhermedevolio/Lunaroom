@@ -1,7 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="card p-3 mt-5">
+    <div class="mt-3">
+        <h2>Editar Usuário {{$user->name}}</h2>
+    </div>
+    <div class="card p-3 ">
         <div class="row">
             <form id="form-update" action="{{route('put-user', $user->id)}}" method="POST">
                 {{method_field('PUT')}}
@@ -18,7 +21,7 @@
 
                 <div class="col-md-6 col-xl-12">
                     <div class="mb-3">
-                        <h2>Editar Usuário {{$user->name}}</h2>
+                        <h2>Informações de Cadastro</h2>
                     </div>
 
                     <div class="mb-3">
@@ -36,47 +39,11 @@
                         <input type="text" class="form-control" name="email" value="{{$user->email}}">
                     </div>
 
-                    @if($user->id != Auth::user()->id)
-                        <label class="form-label">Cargo no Sistema</label>
-                        <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
-                            <label class="form-selectgroup-item flex-fill">
-                                <input type="radio" {{!$user->admin ? 'checked' : ''}} name="admin"
-                                       value="{{\App\Enums\UserEnum::ROLE_USER}}"
-                                       class="form-selectgroup-input">
-                                <div class="form-selectgroup-label d-flex align-items-center p-3">
-                                    <div class="me-3">
-                                        <span class="form-selectgroup-check"></span>
-                                    </div>
-                                    <div>
-                                        Usuário
-                                    </div>
-                                </div>
-                            </label>
-                            <label class="form-selectgroup-item flex-fill">
-                                <input type="radio" {{$user->admin ? 'checked' : ''}} name="admin"
-                                       value="{{\App\Enums\UserEnum::ROLE_ADMIN}}" class="form-selectgroup-input">
-                                <div class="form-selectgroup-label d-flex align-items-center p-3">
-                                    <div class="me-3">
-                                        <span class="form-selectgroup-check"></span>
-                                    </div>
-                                    <div>
-                                        Administrador
-                                    </div>
-                                </div>
-                            </label>
-                            @else
-                                <div class="alert alert-warning">
-                                    <p>Você não pode alterar suas próprias permissões</p>
-                                </div>
-                            @endif
-                            <button id="btn-update" type="submit" class="btn btn-primary mt-3 w-100">Atualizar Dados
-                            </button>
-                            <button id="btn-delete" class="btn btn-danger mt-3 w-100">Excluir Usuário</button>
-                        </div>
 
                 </div>
             </form>
         </div>
+    </div>
         <script>
             $('#btn-delete').on('click', (event) => {
                 event.preventDefault();
@@ -126,9 +93,21 @@
             })
         </script>
 
+    {{-- Courses --}}
+    <div class="card p-3 mt-3" >
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2>Controle de Acesso</h2>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Adicionar Nova Regra
+            </button>
+
+        </div>
+
+    </div>
 
         {{-- Courses --}}
-        <div class="card p-3" style="margin-top: 80px">
+        <div class="card p-3 mt-3" >
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h2>Gerenciar Cursos</h2>
                 <!-- Button trigger modal -->

@@ -84,11 +84,12 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //Admin Routes
-Route::prefix('admin')->middleware(['admin'])->group(function () {
+Route::prefix('admin')->middleware(['role:admin'])->group(function () {
     Route::get('/', [AdminDashboardController::class, 'viewIndex'])->name('dash.admin');
 
     //User Routes
     Route::get('users', [UserController::class, 'getUsers'])->name('users');
+    Route::get('users/search', [UserController::class, 'searchUser'])->name('search-user');
     Route::get('user/{user}', [UserController::class, 'getUserById'])->name('get-user');
     Route::put('user/{user}', [UserController::class, 'putUser'])->name('put-user');
     Route::delete('user/{user}', [UserController::class, 'deleteUser'])->name('delete-user');

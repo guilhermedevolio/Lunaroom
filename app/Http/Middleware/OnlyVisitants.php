@@ -11,18 +11,20 @@ class OnlyVisitants
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->admin){
+        $user = Auth::user();
+
+        if (Auth::check() && $user->hasRole('admin')) {
             return redirect(route('dash.admin'));
         }
 
-        if(Auth::check() && !Auth::user()->admin){
-             return redirect(route('campus'));
+        if (Auth::check()) {
+            return redirect(route('campus'));
         }
 
         return $next($request);

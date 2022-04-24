@@ -27,7 +27,7 @@ class MercadoPagoTransformer
         return [
             "transaction_amount" => (float) $payload['total'],
             'description' => "Sale " . Carbon::now(),
-            'date_of_expiration' => date(sprintf('Y-m-d\TH:i:s%sP', substr(microtime(), 1, 4)), strtotime('+5 minutes')),
+            'date_of_expiration' => date(sprintf('Y-m-d\TH:i:s%sP', substr(microtime(), 1, 4)), strtotime('+30 minutes')),
             'additional_info' => [
                 'items' => $this->transformItems($payload['items']),
             ],

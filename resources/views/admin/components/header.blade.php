@@ -1,5 +1,88 @@
 @yield('head', View::make('layouts.components.head'))
+
+<style>
+    .loader-wrapper {
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        background: rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        -webkit-transition: opacity .2s,visibility .2s;
+        -o-transition: opacity .2s,visibility .2s;
+        transition: opacity .2s,visibility .2s;
+    }
+    .loading-logo > h2 {
+        font-size: 100px;
+        color: #206bc4;
+    }
+    .loading-logo {
+        padding: 10px;
+        border-radius: 30px;
+        border: 8px solid  #206bc4;
+        display: flex;
+    }
+
+    .loading-logo, .loading-logo h2 {
+        animation: logo-anim 1s ease infinite alternate;
+
+    }
+
+    @keyframes logo-anim {
+        0% {
+            opacity: 1;
+        }
+        10% {
+            opacity: 1;
+        }
+        15% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+
+
+    .loading-logo, .anim-1{
+        -webkit-animation-delay: .4s;
+        animation-delay: .4s !important;
+    }
+
+    .loading-logo,.anim-2{
+        -webkit-animation-delay: .4s;
+        animation-delay: .4s !important;
+    }
+
+    .loading-logo,.anim-3{
+        -webkit-animation-delay: .1s;
+        animation-delay: .1s !important;
+    }
+    .-hide {
+        opacity: 0;
+        visibility: hidden;
+    }
+</style>
+<script>
+    function loading() {
+        $('.loader-wrapper').removeClass('-hide');
+    }
+    function unloading() {
+        setTimeout(() => {
+            $('.loader-wrapper').addClass('-hide');
+        }, 800);
+    }
+</script>
 <body class="antialiased">
+<div class="loader-wrapper -hide" >
+        <div class="loading-logo">
+            <h2 class="anim-1">Lu</h2>
+            <h2 class="anim-2">na</h2>
+            <h2 class="anim-3">room</h2>
+        </div>
+</div>
 <div class="wrapper">
     <header class="navbar navbar-expand-md navbar-dark d-print-none">
         <div class="container-xl">
@@ -15,7 +98,8 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown"
                        aria-label="Open user menu">
-                        <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                            <span class="avatar avatar-sm"
+                                  style="background-image: url(./static/avatars/000m.jpg)"></span>
                         <div class="d-none d-xl-block ps-2">
                             <div>{{auth()->user()->name}}</div>
                             <div class="mt-1 small text-muted">Administrador</div>
