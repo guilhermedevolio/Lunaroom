@@ -19,12 +19,17 @@
     <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
-
+    <script>
+        function debounce(func, timeout = 300){
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        }
+    </script>
 </head>
 <style>
-    body{
-        background: #fff !important;
-    }
     table.dataTable.no-footer{
         border-bottom: 1px solid #ccc;
     }

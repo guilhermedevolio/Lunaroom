@@ -29,7 +29,7 @@
                         <a href="{{route('config-user-profile')}}" class="dropdown-item">Perfil</a>
                         <a href="{{route('get-notifications')}}" class="dropdown-item">Notificações</a>
                         <a href="{{route('logout')}}" class="dropdown-item">Logout</a>
-                        @if(Auth::user()->admin)
+                        @if(Auth::user()->hasRole('admin'))
                             <a href="{{route('dash.admin')}}" class="dropdown-item">Admin</a>
                         @endif
                     </div>

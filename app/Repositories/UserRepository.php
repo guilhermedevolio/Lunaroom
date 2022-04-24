@@ -15,21 +15,7 @@ class UserRepository
 
     public function getUsers()
     {
-        $model = $this->model->all();
-
-        $users = [];
-        $admins = [];
-
-        foreach ($model as $user) {
-            if ($user->admin) {
-                array_push($admins, $user);
-            }
-            if (!$user->admin) {
-                array_push($users, $user);
-            }
-        }
-
-        return ["users" => $users, "admins" => $admins];
+        return $this->model->limit(3)->orderBy('id', 'DESC')->get();
     }
 
     public function getUserById(int $userId)

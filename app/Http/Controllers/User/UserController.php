@@ -5,8 +5,10 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Course;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Traits\ResponseTrait;
+use Illuminate\Http\Client\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
@@ -34,6 +36,14 @@ class UserController extends Controller
         $user = $this->repository->getUserById($user);
 
         return view('admin.update-user', compact('user', 'courses'));
+    }
+
+    public function searchUser(\Illuminate\Http\Request $request) {
+        $users = User::where('name', 'LIKE', '%' . $request->get('input') . '%')
+            ->orWhere('email', 'LIKE', '%' . $request->get('input') . '%')
+            ->orWhere('username', 'LIKE', '%' . $request->get('input') . '%')
+            ->get();
+        return response()->json(['ok' => true, 'qtd' => count($users), 'users' => $users]);
     }
 
     public function putUser(UpdateUserRequest $request, int $userId): JsonResponse

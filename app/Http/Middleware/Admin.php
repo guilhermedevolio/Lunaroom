@@ -17,10 +17,6 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!Auth::check() || !Auth::user()->admin){
-            return redirect(route('logout'));
-        }
 
-        return $next($request);
     }
 }
