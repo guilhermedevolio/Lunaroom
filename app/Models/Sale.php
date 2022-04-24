@@ -12,7 +12,7 @@ class Sale extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'value', 'payment_method', 'withdraw'];
+    protected $fillable = ['user_id', 'value', 'status', 'payment_method', 'withdraw'];
 
     public function user(): HasOne
     {
@@ -31,6 +31,6 @@ class Sale extends Model
             'sales_courses',
             'sale_id',
             'course_id'
-        )->withPivot('value');
+        )->withPivot(['value']);
     }
 }

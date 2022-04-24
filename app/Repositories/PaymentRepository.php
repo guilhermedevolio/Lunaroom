@@ -53,7 +53,7 @@ class PaymentRepository
         ]);
 
         foreach ($cartCourses as $course) {
-            $sale->courses()->attach(['course_id' => $course->id, 'value' => $course->price]);
+            $sale->courses()->attach($course->id, ['value' => $course->price]);
         }
 
         $payPayload = (new PaymentTransformer())
@@ -68,7 +68,7 @@ class PaymentRepository
         $service = $this->getServiceByPaymentMethod($payload['payment_method']);
         $payment = $service->makePayment($payPayload);
 
-        $sale->logs()->create(['field' => 'response_send_' . $payload['provider'], 'value' => json_encode($payment)]);
+        $sale->logs()->create(['field' => 'response_send', 'value' => json_encode($payment)]);
         return $this->handlePaymentResponse($payload['payment_method'], $service, $payment);
     }
 
@@ -80,7 +80,7 @@ class PaymentRepository
         $responseValidated = $service->handleResponse($payment_method, $response);
 
         if (isset($responseValidated['error'])) {
-            throw new PaymentErrorException("Ocorreu um erro ao processar o pagamento, tente novamente mais tarde");
+            throw new PaymentErrorException($response['message']);
         }
 
         return $responseValidated;
@@ -92,6 +92,8 @@ class PaymentRepository
         $response = $service->handleCallback($payload);
 
         $sale = Sale::find($response['sale_id'])->first();
+        $sale->logs()->create(['field' => 'callback_' . $payload['provider'], 'value' => json_encode($response)]);
+        $sale->logs()->create(['field' => 'statusChange', 'value' => "Status Changed to " . $response['sale_status']]);
         $sale->update(['status' => $response['sale_status']]);
 
         return ['ok' => true];

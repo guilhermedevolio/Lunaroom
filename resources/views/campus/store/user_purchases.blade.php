@@ -27,16 +27,24 @@
                                 <tr>
                                     <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"># {{$sale->id}}</font></font></td>
                                     <td class="text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-                                                Pacote de {{$sale->credits}} créditos
+                                                Compra: {{$sale->id}}
                                             </font></font></td>
                                     <td class="text-muted"><a href="#" class="text-reset"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                                    @if($sale->status == "P")
+                                                        <span class="badge bg-warning me-1"></span>
+                                                    @elseif($sale->status == "C")
+                                                        <span class="badge bg-danger me-1"></span>
+                                                    @else
+                                                        <span class="badge bg-success me-1"></span>
+                                                    @endif
                                                     {{(new \App\Transformers\PaymentTransformer())->friendlyPaymentStatus($sale->status)}}
+
                                                 </font></font></a></td>
                                     <td class="text-muted"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
                                                 {{$sale->payment_method}}
                                             </font></font></td>
                                     <td>
-                                        <a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> <button class="btn btn-success" disabled>Sacar</button> </font></font></a>
+                                        <a href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> <a class="btn btn-success" >Detalhes</a> </font></font></a>
                                     </td>
                                 </tr>
                             @endforeach

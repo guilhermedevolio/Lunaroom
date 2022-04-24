@@ -62,14 +62,14 @@ class MercadoPagoService implements PaymentContract
 
     public function handleCallback(array $payload): array
     {
-        $sale_id = $payload['data']['id'];
-        $sale = $this->getSaleById($sale_id);
+        $sale = $this->getSaleById($payload['data']['id']);
+        $sale_id = $sale['external_reference'];
+        $statusMP = $sale['status'];
 
-        $status = match ($sale['status']) {
+        $status = match ($statusMP) {
             'pending' => SaleEnum::PENDENT,
             'approved' => SaleEnum::APPROVED,
-            'canceled' => SaleEnum::CANCELED,
-            default => SaleEnum::PENDENT
+            'cancelled' => SaleEnum::CANCELED
         };
 
         return (new PaymentTransformer())->callbackPaymentSchema($status, $sale_id, $sale);

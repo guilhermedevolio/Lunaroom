@@ -51,7 +51,7 @@
                 <a href="{{route('store')}}" class=" w-100 btn btn-info">Continuar Comprando</a>
             </div>
             <div class="mt-3">
-                <a href="" class=" w-100 btn btn-success">Ir para pagamento</a>
+                <a href="{{route('view-checkout')}}" class=" w-100 btn btn-success">Ir para pagamento</a>
             </div>
         </div>
         @else

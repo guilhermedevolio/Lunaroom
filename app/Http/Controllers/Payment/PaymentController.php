@@ -65,10 +65,6 @@ class PaymentController extends Controller
         $payload = $request->all();
         $payload['provider'] = $provider;
 
-        $sale = Sale::find(1)->first();
-        $sale->logs()->create(['field' => 'callback', 'value' => json_encode($request->all())]);
-
-
         try {
             $this->repository->handlePaymentCallback($payload);
         } catch (Exception $ex) {

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PaymentTransformer
 {
-    public function paymentSchema(Sale $sale, $total, Course $items, string $payment_method, User $payer)
+    public function paymentSchema(Sale $sale, $total, $items, string $payment_method, User $payer)
     {
         return [
             'sale' => $sale,
