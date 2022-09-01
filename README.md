@@ -3,11 +3,11 @@
 ### What is lunaroom ?
 #### lunaroom is a software to manage courses.
 
+
 ### What is the idea of Lunaroom ?
 #### Lunaroom idea is to have an MVP of one LMS
 
-
-### Technologies :
+### Stack :
 
 #### Back-end:
     - PHP/LARAVEL;
