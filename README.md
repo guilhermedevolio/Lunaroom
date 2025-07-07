@@ -1,20 +1,33 @@
-# Lunaroom
+# 🌙 Lunaroom
 
-### What is lunaroom ?
-#### lunaroom is a software to manage courses.
+## O que é o Lunaroom?
 
+**Lunaroom** é um software simples e direto para gestão de cursos, oferecendo um ambiente eficiente para administrar conteúdos e turmas.
 
-### What is the idea of Lunaroom ?
-#### Lunaroom idea is to have an MVP of one LMS
+## Qual a ideia do Lunaroom?
 
-### Stack :
+O objetivo do **Lunaroom** é ser um MVP funcional de um sistema de gestão de aprendizagem (**LMS**), fornecendo os recursos essenciais para organizar e gerenciar cursos de forma prática e intuitiva.
 
-#### Back-end:
-    - PHP/LARAVEL;
-#### Front-end
-    - HTML/CSS/JQUERY;
-    - Bootstrap;
-    - Free "Table" Admin Dashboard (https://github.com/tabler/tabler);
+---
 
+## 🛠️ Tecnologias Utilizadas
 
-### Pull Requests are welcome!!
+### Backend
+- **PHP** / **Laravel**
+
+### Frontend
+- **HTML**, **CSS**, **jQuery**
+- **Bootstrap**
+- **Tabler Admin Dashboard**  
+  [Repositório Oficial do Tabler](https://github.com/tabler/tabler)
+
+---
+
+## 🤝 Contribuições
+
+Pull Requests são muito bem-vindos!  
+Se você tiver sugestões ou quiser colaborar com o projeto, fique à vontade para contribuir.
+
+---
+
+## 📢 Fique de olho nas atualizações!
