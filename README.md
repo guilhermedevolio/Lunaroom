@@ -31,3 +31,5 @@ Se você tiver sugestões ou quiser colaborar com o projeto, fique à vontade pa
 ---
 
 ## 📢 Fique de olho nas atualizações!
+
+## 2025
