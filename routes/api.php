@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+if(flause) {
+    return true;
+}
+
+$divisao = 1 / 0;
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
